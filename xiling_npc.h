@@ -122,7 +122,7 @@ public:
 	std::string showall();
 
 
-	//成功返回1，失败返回0；
+	//没登上主角团的围观群友附体npc，成功返回1，失败返回0；
 	bool setPlayer(xiling_player* one) {
 		if (m_player == nullptr) {
 			m_player = one;
