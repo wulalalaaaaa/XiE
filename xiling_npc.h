@@ -5,6 +5,8 @@
 #include"basetools.h"
 #include"xiling_player.h"
 
+//å½“æ—¶è¿™é‡Œåœ¨åšæ°´æ™¶çƒæ¨¡å—ä¸­çš„npcè§’è‰²ï¼Œä½†æ˜¯è¿˜æ²¡æœ‰åšå®Œï¼Œåæ¥ä¹Ÿæ²¡å›æ¥ç»§ç»­åš
+
 extern std::vector<jineng>alljineng;
 
 class xiling_npc {
@@ -25,19 +27,19 @@ class xiling_npc {
 public:
 	int m_jinbi;
 
-	std::vector<std::unique_ptr<wupin>>beibao;			//±³°ü
-	std::vector<std::unique_ptr<jineng>>jinengbiao;		//¼¼ÄÜ±í
+	std::vector<std::unique_ptr<wupin>>beibao;			//èƒŒåŒ…
+	std::vector<std::unique_ptr<jineng>>jinengbiao;		//æŠ€èƒ½è¡¨
 
-	std::vector<zhuangtai>buff;			//×´Ì¬±í
+	std::vector<zhuangtai>buff;			//çŠ¶æ€è¡¨
 
 	std::vector<zhuangtai_acceptance>buff_acceptance;
 	std::vector<zhuangtai_attack>buff_attack;
 
-	xiling_player* m_player;//¸½ÉíÕß
+	xiling_player* m_player;//é™„èº«è€…
 
 
-	xiling_npc()//´¿Â·ÈË£¬Æ½Ãñ
-		:m_chenghao(""),m_name("ÎŞÃû"),m_show("´¿Â·ÈË£¬Çë²»Òª´òÎÒ¡£"), m_health(100), m_healthmax(100), m_magic(10), m_magicmax(10), m_liliang(15), m_zhili(15),
+	xiling_npc()//çº¯è·¯äººï¼Œå¹³æ°‘
+		:m_chenghao(""),m_name("æ— å"),m_show("çº¯è·¯äººï¼Œè¯·ä¸è¦æ‰“æˆ‘ã€‚"), m_health(100), m_healthmax(100), m_magic(10), m_magicmax(10), m_liliang(15), m_zhili(15),
 		m_wufang(10),m_fafang(5),m_jinbi(50),m_player(nullptr) {}
 	xiling_npc(const std::string& chenghao,const std::string& name,const std::string& show,int m_health,int m_magic,int m_liliang,int m_zhili,
 		int m_wufang,int m_fafang,int m_jinbi)
@@ -100,27 +102,27 @@ public:
 
 	}
 
-	//ÌåÁ¦
+	//ä½“åŠ›
 	constexpr int tili() {
 		return static_cast<int>(m_healthmax / 10);
 	}
-	//¾«Éñ
+	//ç²¾ç¥
 	constexpr int jingshen() {
 		return static_cast<int>(m_magicmax / 10);
 	}
-	//µ¥´¿µÄÃû×Ö£¨ÎŞ³ÆºÅ£©
+	//å•çº¯çš„åå­—ï¼ˆæ— ç§°å·ï¼‰
 	constexpr std::string& name() {
 		return m_name;
 	}
-	//Ãû×Ö¼Ó³ÆºÅ
+	//åå­—åŠ ç§°å·
 	std::string showName();
-	//Õì²éÊ§°ÜºóµÄ£¿ÊôĞÔ
+	//ä¾¦æŸ¥å¤±è´¥åçš„ï¼Ÿå±æ€§
 	std::string showFalse();
-	//ËùÓĞÊôĞÔ
+	//æ‰€æœ‰å±æ€§
 	std::string showall();
 
 
-	//³É¹¦·µ»Ø1£¬Ê§°Ü·µ»Ø0£»
+	//æˆåŠŸè¿”å›1ï¼Œå¤±è´¥è¿”å›0ï¼›
 	bool setPlayer(xiling_player* one) {
 		if (m_player == nullptr) {
 			m_player = one;
