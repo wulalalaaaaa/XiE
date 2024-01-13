@@ -19,5 +19,23 @@
 
 //有双份历史版本本地存档的，现在发出来可以给人看。不过上传的对话模块是测试时用的很短的，不想公开小机器的人设部分代码，唔姆，人设？机，，机设！
 
-eg:
+当时的部分截图:
+
 ![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/0Z%5B%24GQJB7D1%7D00Z_27KN8KB.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720211007151040.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220906152405.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907204541.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907214939.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907214944.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907214950.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907214957.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907215005.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907215008.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907215012.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220907215016.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220908222627.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220908234049.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220909173216.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220909174943.png)
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/QQ%E5%9B%BE%E7%89%8720220909204714.png)
+
