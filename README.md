@@ -18,3 +18,6 @@
 
 
 //有双份历史版本本地存档的，现在发出来可以给人看。不过上传的对话模块是测试时用的很短的，不想公开小机器的人设部分代码，唔姆，人设？机，，机设！
+
+eg:
+![contents](https://github.com/wulalalaaaaa/22-qq-/blob/main/img/0Z%5B%24GQJB7D1%7D00Z_27KN8KB.png)
