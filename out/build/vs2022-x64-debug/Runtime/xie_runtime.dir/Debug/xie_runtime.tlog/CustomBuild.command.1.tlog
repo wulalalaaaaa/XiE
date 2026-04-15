@@ -1,0 +1,10 @@
+^E:\PROJECT_C++\XIE\RUNTIME\CMAKELISTS.TXT
+setlocal
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -SE:/Project_c++/XiE -BE:/Project_c++/XiE/out/build/vs2022-x64-debug --check-stamp-file E:/Project_c++/XiE/out/build/vs2022-x64-debug/Runtime/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

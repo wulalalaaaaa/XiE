@@ -8,65 +8,74 @@
 
 #include <GLFW/glfw3.h>
 
-namespace Engine {
+namespace Engine 
+{
 
-Application::Application() = default;
+    Application::Application() = default;
 
-Application::~Application() {
-    Shutdown();
-}
-
-bool Application::Init() {
-    Log::Init();
-
-    if (glfwInit() != GLFW_TRUE) {
-        Log::Error("Failed to initialize GLFW");
-        return false;
+    Application::~Application() 
+    {
+        Shutdown();
     }
 
-    m_Window = std::make_unique<Window>(1280, 720, "XiE Engine");
-    m_Renderer = std::make_unique<Renderer>();
-    m_Renderer->Init();
+    bool Application::Init() 
+    {
+        Log::Init();
 
-    m_Running = true;
-    Log::Info("Application initialized");
-    return true;
-}
+        if (glfwInit() != GLFW_TRUE) {
+            XLOG_ERROR("Failed to initialize GLFW");
+            return false;
+        }
 
-void Application::Run() {
-    try {
-        if (!Init()) {
+        m_Window = std::make_unique<Window>(1280, 720, "XiE Engine");
+        m_Renderer = std::make_unique<Renderer>();
+        m_Renderer->Init();
+
+        m_Running = true;
+        XLOG_INFO("Application initialized");
+        return true;
+    }
+
+    void Application::Tick(float dt)
+    {
+
+    }
+
+    void Application::Run() 
+    {
+        try {
+            if (!Init()) {
+                return;
+            }
+
+            while (m_Running && !m_Window->ShouldClose()) {
+                m_Renderer->BeginFrame();
+
+                m_Window->SwapBuffers();
+                m_Window->PollEvents();
+
+                m_Renderer->EndFrame();
+            }
+        } catch (const std::exception& e) {
+            XLOG_ERROR(e.what());
+        }
+    }
+
+    void Application::Shutdown() {
+        if (!m_Running && !m_Renderer && !m_Window) {
             return;
         }
 
-        while (m_Running && !m_Window->ShouldClose()) {
-            m_Renderer->BeginFrame();
-
-            m_Window->SwapBuffers();
-            m_Window->PollEvents();
-
-            m_Renderer->EndFrame();
+        if (m_Renderer) {
+            m_Renderer->Shutdown();
+            m_Renderer.reset();
         }
-    } catch (const std::exception& e) {
-        Log::Error(e.what());
+
+        m_Window.reset();
+        glfwTerminate();
+
+        m_Running = false;
+        XLOG_INFO("Application shutdown");
     }
-}
-
-void Application::Shutdown() {
-    if (!m_Running && !m_Renderer && !m_Window) {
-        return;
-    }
-
-    if (m_Renderer) {
-        m_Renderer->Shutdown();
-        m_Renderer.reset();
-    }
-
-    m_Window.reset();
-    glfwTerminate();
-
-    m_Running = false;
-    Log::Info("Application shutdown");
-}
 
 } // namespace Engine

@@ -1,0 +1,150 @@
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-MKDIR.RULE
+setlocal
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -Dcfgdir=/Debug -P E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/tmp/glfw-populate-mkdirs.cmake
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-mkdir
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-DOWNLOAD.RULE
+setlocal
+cd E:\Project_c++\XiE\out\build\vs2022-x64-debug\_deps
+if %errorlevel% neq 0 goto :cmEnd
+E:
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/tmp/glfw-populate-gitclone.cmake
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-download
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-UPDATE.RULE
+setlocal
+cd E:\Project_c++\XiE\out\build\vs2022-x64-debug\_deps\glfw-src
+if %errorlevel% neq 0 goto :cmEnd
+E:
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -Dcan_fetch=YES -DCMAKE_MESSAGE_LOG_LEVEL=VERBOSE -P E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/tmp/glfw-populate-gitupdate.cmake
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-PATCH.RULE
+setlocal
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-patch
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-CONFIGURE.RULE
+setlocal
+cd E:\Project_c++\XiE\out\build\vs2022-x64-debug\_deps\glfw-build
+if %errorlevel% neq 0 goto :cmEnd
+E:
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-configure
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-BUILD.RULE
+setlocal
+cd E:\Project_c++\XiE\out\build\vs2022-x64-debug\_deps\glfw-build
+if %errorlevel% neq 0 goto :cmEnd
+E:
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-build
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-INSTALL.RULE
+setlocal
+cd E:\Project_c++\XiE\out\build\vs2022-x64-debug\_deps\glfw-build
+if %errorlevel% neq 0 goto :cmEnd
+E:
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-install
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\C9D955C7B2168D7618AC13D211669852\GLFW-POPULATE-TEST.RULE
+setlocal
+cd E:\Project_c++\XiE\out\build\vs2022-x64-debug\_deps\glfw-build
+if %errorlevel% neq 0 goto :cmEnd
+E:
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E echo_append
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-test
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\AE046E20D34890AD6AC53901400162E4\GLFW-POPULATE-COMPLETE.RULE
+setlocal
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E make_directory E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/Debug
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/Debug/glfw-populate-complete
+if %errorlevel% neq 0 goto :cmEnd
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -E touch E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/glfw-populate-prefix/src/glfw-populate-stamp/Debug/glfw-populate-done
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKEFILES\29FDD12E099CB2EF71BE7359E8E027A6\GLFW-POPULATE.RULE
+setlocal
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^E:\PROJECT_C++\XIE\OUT\BUILD\VS2022-X64-DEBUG\_DEPS\GLFW-SUBBUILD\CMAKELISTS.TXT
+setlocal
+E:\justborrow\vs\visualStudiopro\Common7\IDE\CommonExtensions\Microsoft\CMake\CMake\bin\cmake.exe -SE:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild -BE:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild --check-stamp-file E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

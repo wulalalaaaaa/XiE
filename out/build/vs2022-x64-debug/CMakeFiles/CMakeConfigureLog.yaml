@@ -1,0 +1,457 @@
+
+---
+events:
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineSystem.cmake:205 (message)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      The system is: Windows - 10.0.19045 - AMD64
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCXXCompiler.cmake:126 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+      生成启动时间为 2026/4/16 1:30:24。
+      
+      节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\3.31.6-msvc6\\CompilerIdCXX\\CompilerIdCXX.vcxproj”(默认目标)。
+      PrepareForBuild:
+        正在创建目录“Debug\\”。
+        正在创建目录“Debug\\CompilerIdCXX.tlog\\”。
+      InitializeBuildStatus:
+        正在创建“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        正在对“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”执行 Touch 任务。
+      ClCompile:
+        E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TP /FC /errorReport:queue CMakeCXXCompilerId.cpp
+        CMakeCXXCompilerId.cpp
+      Link:
+        E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdCXX.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdCXX.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdCXX.lib" /MACHINE:X64 Debug\\CMakeCXXCompilerId.obj
+        CompilerIdCXX.vcxproj -> E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\3.31.6-msvc6\\CompilerIdCXX\\CompilerIdCXX.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_CXX_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_CXX_COMPILER=E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        正在删除文件“Debug\\CompilerIdCXX.tlog\\unsuccessfulbuild”。
+        正在对“Debug\\CompilerIdCXX.tlog\\CompilerIdCXX.lastbuildstate”执行 Touch 任务。
+      已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\3.31.6-msvc6\\CompilerIdCXX\\CompilerIdCXX.vcxproj”(默认目标)的操作。
+      
+      已成功生成。
+          0 个警告
+          0 个错误
+      
+      已用时间 00:00:01.24
+      
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.exe"
+      
+      Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CompilerIdCXX.vcxproj"
+      
+      The CXX compiler identification is MSVC, found in:
+        E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/3.31.6-msvc6/CompilerIdCXX/CompilerIdCXX.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    checks:
+      - "Detecting CXX compiler ABI info"
+    directories:
+      source: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-xb8yng"
+      binary: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-xb8yng"
+    cmakeVariables:
+      CMAKE_CXX_FLAGS: "/DWIN32 /D_WINDOWS /EHsc"
+      CMAKE_CXX_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_CXX_SCAN_FOR_MODULES: "OFF"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_CXX_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-xb8yng'
+        
+        Run Build Command(s): E:/justborrow/vs/visualStudiopro/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_3638e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+        生成启动时间为 2026/4/16 1:30:26。
+        
+        节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-xb8yng\\cmTC_3638e.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_3638e.dir\\Debug\\”。
+          正在创建目录“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-xb8yng\\Debug\\”。
+          正在创建目录“cmTC_3638e.dir\\Debug\\cmTC_3638e.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_3638e.dir\\Debug\\cmTC_3638e.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_3638e.dir\\Debug\\cmTC_3638e.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_3638e.dir\\Debug\\\\" /Fd"cmTC_3638e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\justborrow\\vs\\visualStudiopro\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.31\\Modules\\CMakeCXXCompilerABI.cpp"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.36.32548 版
+          CMakeCXXCompilerABI.cpp
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /std:c++17 /Fo"cmTC_3638e.dir\\Debug\\\\" /Fd"cmTC_3638e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TP /errorReport:queue "E:\\justborrow\\vs\\visualStudiopro\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.31\\Modules\\CMakeCXXCompilerABI.cpp"
+        Link:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-xb8yng\\Debug\\cmTC_3638e.exe" /INCREMENTAL /ILK:"cmTC_3638e.dir\\Debug\\cmTC_3638e.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-xb8yng/Debug/cmTC_3638e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-xb8yng/Debug/cmTC_3638e.lib" /MACHINE:X64  /machine:x64 cmTC_3638e.dir\\Debug\\CMakeCXXCompilerABI.obj
+          cmTC_3638e.vcxproj -> E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-xb8yng\\Debug\\cmTC_3638e.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_3638e.dir\\Debug\\cmTC_3638e.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_3638e.dir\\Debug\\cmTC_3638e.tlog\\cmTC_3638e.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-xb8yng\\cmTC_3638e.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.74
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Parsed CXX implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'CXX': E:/justborrow/vs/visualStudiopro/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeTestCXXCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "CMakeLists.txt:2 (project)"
+    message: |
+      Running the CXX compiler's linker: "E:/justborrow/vs/visualStudiopro/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.36.32548.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:17 (message)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerId.cmake:64 (__determine_compiler_id_test)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCCompiler.cmake:123 (CMAKE_DETERMINE_COMPILER_ID)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:3 (project)"
+    message: |
+      Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+      Compiler:  
+      Build flags: 
+      Id flags:  
+      
+      The output was:
+      0
+      适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+      生成启动时间为 2026/4/16 1:30:34。
+      
+      节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\3.31.6-msvc6\\CompilerIdC\\CompilerIdC.vcxproj”(默认目标)。
+      PrepareForBuild:
+        正在创建目录“Debug\\”。
+        正在创建目录“Debug\\CompilerIdC.tlog\\”。
+      InitializeBuildStatus:
+        正在创建“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+        正在对“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”执行 Touch 任务。
+      ClCompile:
+        E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /nologo /W0 /WX- /diagnostics:column /Od /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"Debug\\\\" /Fd"Debug\\vc143.pdb" /external:W0 /Gd /TC /FC /errorReport:queue CMakeCCompilerId.c
+        CMakeCCompilerId.c
+      Link:
+        E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:".\\CompilerIdC.exe" /INCREMENTAL:NO /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib comdlg32.lib advapi32.lib shell32.lib ole32.lib oleaut32.lib uuid.lib odbc32.lib odbccp32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /PDB:".\\CompilerIdC.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:".\\CompilerIdC.lib" /MACHINE:X64 Debug\\CMakeCCompilerId.obj
+        CompilerIdC.vcxproj -> E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\3.31.6-msvc6\\CompilerIdC\\CompilerIdC.exe
+      PostBuildEvent:
+        for %%i in (cl.exe) do @echo CMAKE_C_COMPILER=%%~$PATH:i
+        :VCEnd
+        CMAKE_C_COMPILER=E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\Hostx64\\x64\\cl.exe
+      FinalizeBuildStatus:
+        正在删除文件“Debug\\CompilerIdC.tlog\\unsuccessfulbuild”。
+        正在对“Debug\\CompilerIdC.tlog\\CompilerIdC.lastbuildstate”执行 Touch 任务。
+      已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\3.31.6-msvc6\\CompilerIdC\\CompilerIdC.vcxproj”(默认目标)的操作。
+      
+      已成功生成。
+          0 个警告
+          0 个错误
+      
+      已用时间 00:00:00.64
+      
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.exe"
+      
+      Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CompilerIdC.vcxproj"
+      
+      The C compiler identification is MSVC, found in:
+        E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/3.31.6-msvc6/CompilerIdC/CompilerIdC.exe
+      
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:74 (try_compile)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:3 (project)"
+    checks:
+      - "Detecting C compiler ABI info"
+    directories:
+      source: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-squ8zo"
+      binary: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-squ8zo"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+    buildResult:
+      variable: "CMAKE_C_ABI_COMPILED"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-squ8zo'
+        
+        Run Build Command(s): E:/justborrow/vs/visualStudiopro/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_95cfd.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+        生成启动时间为 2026/4/16 1:30:35。
+        
+        节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-squ8zo\\cmTC_95cfd.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_95cfd.dir\\Debug\\”。
+          正在创建目录“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-squ8zo\\Debug\\”。
+          正在创建目录“cmTC_95cfd.dir\\Debug\\cmTC_95cfd.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_95cfd.dir\\Debug\\cmTC_95cfd.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_95cfd.dir\\Debug\\cmTC_95cfd.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_95cfd.dir\\Debug\\\\" /Fd"cmTC_95cfd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\justborrow\\vs\\visualStudiopro\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.36.32548 版
+          CMakeCCompilerABI.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_95cfd.dir\\Debug\\\\" /Fd"cmTC_95cfd.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\justborrow\\vs\\visualStudiopro\\Common7\\IDE\\CommonExtensions\\Microsoft\\CMake\\CMake\\share\\cmake-3.31\\Modules\\CMakeCCompilerABI.c"
+        Link:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-squ8zo\\Debug\\cmTC_95cfd.exe" /INCREMENTAL /ILK:"cmTC_95cfd.dir\\Debug\\cmTC_95cfd.ilk" /NOLOGO kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-squ8zo/Debug/cmTC_95cfd.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-squ8zo/Debug/cmTC_95cfd.lib" /MACHINE:X64  /machine:x64 cmTC_95cfd.dir\\Debug\\CMakeCCompilerABI.obj
+          cmTC_95cfd.vcxproj -> E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-squ8zo\\Debug\\cmTC_95cfd.exe
+        FinalizeBuildStatus:
+          正在删除文件“cmTC_95cfd.dir\\Debug\\cmTC_95cfd.tlog\\unsuccessfulbuild”。
+          正在对“cmTC_95cfd.dir\\Debug\\cmTC_95cfd.tlog\\cmTC_95cfd.lastbuildstate”执行 Touch 任务。
+        已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-squ8zo\\cmTC_95cfd.vcxproj”(默认目标)的操作。
+        
+        已成功生成。
+            0 个警告
+            0 个错误
+        
+        已用时间 00:00:00.67
+        
+      exitCode: 0
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:218 (message)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:3 (project)"
+    message: |
+      Parsed C implicit link information:
+        link line regex: [^( *|.*[/\\])(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?|CMAKE_LINK_STARTFILE-NOTFOUND|([^/\\]+-)?ld|collect2)[^/\\]*( |$)]
+        linker tool regex: [^[ 	]*(->|")?[ 	]*(([^"]*[/\\])?(ld[0-9]*(\\.[a-z]+)?|link\\.exe|lld-link(\\.exe)?))("|,| |$)]
+        linker tool for 'C': E:/justborrow/vs/visualStudiopro/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/link.exe
+        implicit libs: []
+        implicit objs: []
+        implicit dirs: []
+        implicit fwks: []
+      
+      
+  -
+    kind: "message-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Internal/CMakeDetermineLinkerId.cmake:40 (message)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeDetermineCompilerABI.cmake:255 (cmake_determine_linker_id)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CMakeTestCCompiler.cmake:26 (CMAKE_DETERMINE_COMPILER_ABI)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:3 (project)"
+    message: |
+      Running the C compiler's linker: "E:/justborrow/vs/visualStudiopro/VC/Tools/MSVC/14.36.32532/bin/HostX64/x64/link.exe" "-v"
+      Microsoft (R) Incremental Linker Version 14.36.32548.0
+      Copyright (C) Microsoft Corporation.  All rights reserved.
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/Internal/CheckSourceCompiles.cmake:108 (try_compile)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CheckCSourceCompiles.cmake:58 (cmake_check_source_compiles)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindThreads.cmake:97 (CHECK_C_SOURCE_COMPILES)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindThreads.cmake:163 (_threads_check_libc)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:60 (find_package)"
+    checks:
+      - "Performing Test CMAKE_HAVE_LIBC_PTHREAD"
+    directories:
+      source: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-ul6i30"
+      binary: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-ul6i30"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-src/CMake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_LIBC_PTHREAD"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-ul6i30'
+        
+        Run Build Command(s): E:/justborrow/vs/visualStudiopro/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_5084c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+        生成启动时间为 2026/4/16 1:30:36。
+        
+        节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\cmTC_5084c.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_5084c.dir\\Debug\\”。
+          正在创建目录“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\Debug\\”。
+          正在创建目录“cmTC_5084c.dir\\Debug\\cmTC_5084c.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_5084c.dir\\Debug\\cmTC_5084c.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_5084c.dir\\Debug\\cmTC_5084c.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5084c.dir\\Debug\\\\" /Fd"cmTC_5084c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\src.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.36.32548 版
+          src.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CMAKE_HAVE_LIBC_PTHREAD /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_5084c.dir\\Debug\\\\" /Fd"cmTC_5084c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\src.c"
+        E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\src.c(1,10): fatal  error C1083: 无法打开包括文件: “pthread.h”: No such file or directory [E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\cmTC_5084c.vcxproj]
+        已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\cmTC_5084c.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\cmTC_5084c.vcxproj”(默认目标) (1) ->
+        (ClCompile 目标) -> 
+          E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\src.c(1,10): fatal  error C1083: 无法打开包括文件: “pthread.h”: No such file or directory [E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-ul6i30\\cmTC_5084c.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.39
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CheckLibraryExists.cmake:78 (try_compile)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindThreads.cmake:175 (_threads_check_lib)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:60 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthreads"
+    directories:
+      source: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-arm8y2"
+      binary: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-arm8y2"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-src/CMake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREADS_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-arm8y2'
+        
+        Run Build Command(s): E:/justborrow/vs/visualStudiopro/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_f508e.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+        生成启动时间为 2026/4/16 1:30:37。
+        
+        节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\cmTC_f508e.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_f508e.dir\\Debug\\”。
+          正在创建目录“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\Debug\\”。
+          正在创建目录“cmTC_f508e.dir\\Debug\\cmTC_f508e.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_f508e.dir\\Debug\\cmTC_f508e.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_f508e.dir\\Debug\\cmTC_f508e.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f508e.dir\\Debug\\\\" /Fd"cmTC_f508e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\CheckFunctionExists.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.36.32548 版
+          CheckFunctionExists.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_f508e.dir\\Debug\\\\" /Fd"cmTC_f508e.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\CheckFunctionExists.c"
+        Link:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\Debug\\cmTC_f508e.exe" /INCREMENTAL /ILK:"cmTC_f508e.dir\\Debug\\cmTC_f508e.ilk" /NOLOGO pthreads.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-arm8y2/Debug/cmTC_f508e.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-arm8y2/Debug/cmTC_f508e.lib" /MACHINE:X64  /machine:x64 cmTC_f508e.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 无法打开文件“pthreads.lib” [E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\cmTC_f508e.vcxproj]
+        已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\cmTC_f508e.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\cmTC_f508e.vcxproj”(默认目标) (1) ->
+        (Link 目标) -> 
+          LINK : fatal error LNK1104: 无法打开文件“pthreads.lib” [E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-arm8y2\\cmTC_f508e.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.58
+        
+      exitCode: 1
+  -
+    kind: "try_compile-v1"
+    backtrace:
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/CheckLibraryExists.cmake:78 (try_compile)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindThreads.cmake:112 (CHECK_LIBRARY_EXISTS)"
+      - "E:/justborrow/vs/visualStudiopro/Common7/IDE/CommonExtensions/Microsoft/CMake/CMake/share/cmake-3.31/Modules/FindThreads.cmake:176 (_threads_check_lib)"
+      - "out/build/vs2022-x64-debug/_deps/glfw-src/CMakeLists.txt:60 (find_package)"
+    checks:
+      - "Looking for pthread_create in pthread"
+    directories:
+      source: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-71o24h"
+      binary: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-71o24h"
+    cmakeVariables:
+      CMAKE_C_FLAGS: "/DWIN32 /D_WINDOWS"
+      CMAKE_C_FLAGS_DEBUG: "/Zi /Ob0 /Od /RTC1"
+      CMAKE_EXE_LINKER_FLAGS: "/machine:x64"
+      CMAKE_MODULE_PATH: "E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-src/CMake/modules"
+    buildResult:
+      variable: "CMAKE_HAVE_PTHREAD_CREATE"
+      cached: true
+      stdout: |
+        Change Dir: 'E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-71o24h'
+        
+        Run Build Command(s): E:/justborrow/vs/visualStudiopro/MSBuild/Current/Bin/amd64/MSBuild.exe cmTC_d630c.vcxproj /p:Configuration=Debug /p:Platform=x64 /p:VisualStudioVersion=17.0 /v:n
+        适用于 .NET Framework MSBuild 版本 17.14.23+b0019275e
+        生成启动时间为 2026/4/16 1:30:37。
+        
+        节点 1 上的项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\cmTC_d630c.vcxproj”(默认目标)。
+        PrepareForBuild:
+          正在创建目录“cmTC_d630c.dir\\Debug\\”。
+          正在创建目录“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\Debug\\”。
+          正在创建目录“cmTC_d630c.dir\\Debug\\cmTC_d630c.tlog\\”。
+        InitializeBuildStatus:
+          正在创建“cmTC_d630c.dir\\Debug\\cmTC_d630c.tlog\\unsuccessfulbuild”，因为已指定“AlwaysCreate”。
+          正在对“cmTC_d630c.dir\\Debug\\cmTC_d630c.tlog\\unsuccessfulbuild”执行 Touch 任务。
+        ClCompile:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\CL.exe /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d630c.dir\\Debug\\\\" /Fd"cmTC_d630c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\CheckFunctionExists.c"
+          用于 x64 的 Microsoft (R) C/C++ 优化编译器 19.36.32548 版
+          CheckFunctionExists.c
+          版权所有(C) Microsoft Corporation。保留所有权利。
+          cl /c /Zi /W1 /WX- /diagnostics:column /Od /Ob0 /D _MBCS /D WIN32 /D _WINDOWS /D CHECK_FUNCTION_EXISTS=pthread_create /D "CMAKE_INTDIR=\\"Debug\\"" /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /Zc:inline /Fo"cmTC_d630c.dir\\Debug\\\\" /Fd"cmTC_d630c.dir\\Debug\\vc143.pdb" /external:W1 /Gd /TC /errorReport:queue "E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\CheckFunctionExists.c"
+        Link:
+          E:\\justborrow\\vs\\visualStudiopro\\VC\\Tools\\MSVC\\14.36.32532\\bin\\HostX64\\x64\\link.exe /ERRORREPORT:QUEUE /OUT:"E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\Debug\\cmTC_d630c.exe" /INCREMENTAL /ILK:"cmTC_d630c.dir\\Debug\\cmTC_d630c.ilk" /NOLOGO pthread.lib kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib /MANIFEST /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /manifest:embed /DEBUG /PDB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-71o24h/Debug/cmTC_d630c.pdb" /SUBSYSTEM:CONSOLE /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/CMakeScratch/TryCompile-71o24h/Debug/cmTC_d630c.lib" /MACHINE:X64  /machine:x64 cmTC_d630c.dir\\Debug\\CheckFunctionExists.obj
+        LINK : fatal error LNK1104: 无法打开文件“pthread.lib” [E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\cmTC_d630c.vcxproj]
+        已完成生成项目“E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\cmTC_d630c.vcxproj”(默认目标)的操作 - 失败。
+        
+        生成失败。
+        
+        “E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\cmTC_d630c.vcxproj”(默认目标) (1) ->
+        (Link 目标) -> 
+          LINK : fatal error LNK1104: 无法打开文件“pthread.lib” [E:\\Project_c++\\XiE\\out\\build\\vs2022-x64-debug\\CMakeFiles\\CMakeScratch\\TryCompile-71o24h\\cmTC_d630c.vcxproj]
+        
+            0 个警告
+            1 个错误
+        
+        已用时间 00:00:00.52
+        
+      exitCode: 1
+...

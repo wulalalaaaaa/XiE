@@ -1,0 +1,80 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": {
+    "major": 3,
+    "minor": 20,
+    "patch": 0
+  },
+  "configurePresets": [
+    {
+      "name": "vs2022-x64-debug",
+      "displayName": "VS2022 x64 Debug (VS Generator)",
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "toolset": "v143",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CONFIGURATION_TYPES": "Debug;Release",
+        "CMAKE_CXX_STANDARD": "17",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Windows"
+          ],
+          "intelliSenseMode": "windows-msvc-x64",
+          "inheritEnvironments": [
+            "msvc_x64"
+          ]
+        }
+      }
+    },
+    {
+      "name": "vs2022-x64-release",
+      "displayName": "VS2022 x64 Release (VS Generator)",
+      "inherits": "vs2022-x64-debug"
+    },
+    {
+      "name": "ninja-msvc-x64-debug",
+      "displayName": "Ninja + MSVC x64 Debug (Recommended for IntelliSense)",
+      "generator": "Ninja Multi-Config",
+      "binaryDir": "${sourceDir}/out/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_CXX_STANDARD": "17",
+        "CMAKE_CXX_STANDARD_REQUIRED": "ON",
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+      },
+      "vendor": {
+        "microsoft.com/VisualStudioSettings/CMake/1.0": {
+          "hostOS": [
+            "Windows"
+          ],
+          "intelliSenseMode": "windows-msvc-x64",
+          "inheritEnvironments": [
+            "msvc_x64"
+          ]
+        }
+      }
+    }
+  ],
+  "buildPresets": [
+    {
+      "name": "build-debug",
+      "configurePreset": "vs2022-x64-debug",
+      "configuration": "Debug"
+    },
+    {
+      "name": "build-release",
+      "configurePreset": "vs2022-x64-release",
+      "configuration": "Release"
+    },
+    {
+      "name": "build-ninja-debug",
+      "configurePreset": "ninja-msvc-x64-debug",
+      "configuration": "Debug"
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+# Target labels
+ glfw-populate
+# Source files and their labels
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/glfw-populate
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/29fdd12e099cb2ef71be7359e8e027a6/glfw-populate.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/ae046e20d34890ad6ac53901400162e4/glfw-populate-complete.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-build.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-configure.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-download.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-install.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-mkdir.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-patch.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-test.rule
+E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-subbuild/CMakeFiles/c9d955c7b2168d7618ac13d211669852/glfw-populate-update.rule
