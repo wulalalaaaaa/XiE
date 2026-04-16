@@ -1,0 +1,10 @@
+# Visual Studio 2015 user specific files
+.vs/
+.idea/**
+
+# Binary Files
+Binaries/*
+Plugins/**/Binaries/*
+
+# Builds
+vs_build/*

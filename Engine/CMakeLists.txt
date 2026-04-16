@@ -9,7 +9,7 @@ add_library(xie_engine
     Renderer/Renderer.h
 )
 
-target_compile_features(xie_engine PUBLIC cxx_std_17)
+target_compile_features(xie_engine PUBLIC cxx_std_20)
 
 target_include_directories(xie_engine
     PUBLIC

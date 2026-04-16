@@ -15,7 +15,7 @@ const char* ToTag(Log::Level level) {
     case Log::Level::Warn:     return "[warning]";
     case Log::Level::Error:    return "[error]";
     case Log::Level::Info:     return "[info]";
-    default:                   return "[???]";
+    default:                   return "[ ??? ]";
     }
 }
 

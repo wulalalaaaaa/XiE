@@ -34,7 +34,6 @@ bool Window::ShouldClose() const {
 void Window::PollEvents() const {
     glfwPollEvents();
 
-    // 最小闭环：按 ESC 优雅关闭窗口
     if (glfwGetKey(m_Handle, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         glfwSetWindowShouldClose(m_Handle, GLFW_TRUE);
     }

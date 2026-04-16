@@ -1,7 +1,0 @@
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/ALL_BUILD.dir
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/CMakeFiles/ZERO_CHECK.dir
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/Engine/CMakeFiles/xie_engine.dir
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-build/CMakeFiles/ALL_BUILD.dir
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-build/src/CMakeFiles/glfw.dir
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/_deps/glfw-build/src/CMakeFiles/update_mappings.dir
-E:/Project_c++/XiE/out/build/vs2022-x64-debug/Runtime/CMakeFiles/xie_runtime.dir

@@ -5,7 +5,7 @@
 #include "Renderer/Renderer.h"
 
 #include <exception>
-
+// #include <chrono>
 #include <GLFW/glfw3.h>
 
 namespace Engine 
@@ -32,6 +32,9 @@ namespace Engine
         m_Renderer->Init();
 
         m_Running = true;
+
+        currentTime = glfwGetTime();
+
         XLOG_INFO("Application initialized");
         return true;
     }
@@ -53,7 +56,10 @@ namespace Engine
 
                 m_Window->SwapBuffers();
                 m_Window->PollEvents();
-
+                float lastTime = glfwGetTime();
+                float DeltaTime = lastTime - this->currentTime;
+                this->currentTime = lastTime;
+                Tick(DeltaTime);
                 m_Renderer->EndFrame();
             }
         } catch (const std::exception& e) {
