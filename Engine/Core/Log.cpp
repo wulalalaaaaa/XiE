@@ -1,43 +1,26 @@
 #include "Log.h"
 
-#include <iostream>
-#include <string>
+#include <spdlog/sinks/stdout_color_sinks.h>
+#include <spdlog/spdlog.h>
 
 namespace Engine {
 
-namespace {
-
-const char* ToTag(Log::Level level) {
-    switch (level) {
-    case Log::Level::Green:    return "[ √ ]";
-    case Log::Level::OkBut:    return "[okBut]";
-    case Log::Level::NotAllow: return "[notAllow]";
-    case Log::Level::Warn:     return "[warning]";
-    case Log::Level::Error:    return "[error]";
-    case Log::Level::Info:     return "[info]";
-    default:                   return "[ ??? ]";
+    void Log::Init() {
+        m_enginelogger = spdlog::stdout_color_mt("enginelogger");
+        m_enginelogger->set_pattern("[%H:%M:%S] [%^%l%$] %v");
+        m_clientlogger = spdlog::stdout_color_mt("clientlogger");
+        m_clientlogger->set_pattern("[%H:%M:%S] [%^%l%$] %v");
+        spdlog::set_default_logger(m_clientlogger);
+        spdlog::set_level(spdlog::level::trace);
+        spdlog::info("[XLog] Initialized with spdlog");
     }
-}
 
-} // namespace
-
-void Log::Init() {
-    XLOG_GREEN("[XLog] Initialized.");
-}
-
-void Log::log(Log::Level level, const std::string& message, const char* file, int line) {
-    std::ostream& out = (level == Level::Error) ? std::cerr : std::cout;
-    out << ToTag(level) << ' ' << message;
-
-    if (file != nullptr) {
-        out << " (" << file;
-        if (line > 0) {
-            out << ':' << line;
+    void Log::log(spdlog::level::level_enum level, const std::string& message, const char* file, int line) {
+        if (file != nullptr) {
+            spdlog::log(level, "{} ({}:{})", message, file, line);
+        } else {
+            spdlog::log(level, "{}", message);
         }
-        out << ')';
     }
-
-    out << "\n";
-}
 
 } // namespace Engine

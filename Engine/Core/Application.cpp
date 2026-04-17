@@ -29,7 +29,11 @@ namespace Engine
 
         m_Window = std::make_unique<Window>(1280, 720, "XiE Engine");
         m_Renderer = std::make_unique<Renderer>();
-        m_Renderer->Init();
+
+        if (!m_Renderer->Init(m_Window->GetNativeHandle())) {
+            XLOG_ERROR("Renderer initialization failed");
+            return false;
+        }
 
         m_Running = true;
 
@@ -41,6 +45,8 @@ namespace Engine
 
     void Application::Tick(float dt)
     {
+        m_Window->SwapBuffers();
+        m_Window->PollEvents();
 
     }
 
@@ -53,13 +59,12 @@ namespace Engine
 
             while (m_Running && !m_Window->ShouldClose()) {
                 m_Renderer->BeginFrame();
-
-                m_Window->SwapBuffers();
-                m_Window->PollEvents();
+               
                 float lastTime = glfwGetTime();
                 float DeltaTime = lastTime - this->currentTime;
                 this->currentTime = lastTime;
                 Tick(DeltaTime);
+
                 m_Renderer->EndFrame();
             }
         } catch (const std::exception& e) {

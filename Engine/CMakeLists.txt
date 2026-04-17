@@ -1,12 +1,12 @@
-add_library(xie_engine
-    Core/Application.cpp
-    Core/Application.h
-    Core/Log.cpp
-    Core/Log.h
-    Platform/Window.cpp
-    Platform/Window.h
-    Renderer/Renderer.cpp
-    Renderer/Renderer.h
+# 自动收集 Engine 源文件，新增文件后重新配置即可出现在 VS
+file(GLOB_RECURSE XIE_ENGINE_SOURCES CONFIGURE_DEPENDS
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
+)
+
+# 改为 DLL（共享库）
+add_library(xie_engine SHARED
+    ${XIE_ENGINE_SOURCES}
 )
 
 target_compile_features(xie_engine PUBLIC cxx_std_20)
@@ -15,6 +15,14 @@ target_include_directories(xie_engine
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
 )
+
+# Windows 下自动导出符号，避免手写 __declspec(dllexport)
+set_target_properties(xie_engine PROPERTIES
+    WINDOWS_EXPORT_ALL_SYMBOLS ON
+)
+
+# 在 Visual Studio 中按真实目录树显示
+source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${XIE_ENGINE_SOURCES})
 
 include(FetchContent)
 
@@ -41,7 +49,30 @@ if (NOT TARGET glfw)
     FetchContent_MakeAvailable(glfw)
 endif()
 
+# GLAD: modern OpenGL function loader
+# NOTE: glad's helper function `glad_add_library` is defined in its cmake module.
+# Make the module available before calling it.
+FetchContent_Declare(
+    glad
+    GIT_REPOSITORY https://github.com/Dav1dde/glad.git
+    GIT_TAG v2.0.8
+)
+
+FetchContent_GetProperties(glad)
+if (NOT glad_POPULATED)
+    FetchContent_Populate(glad)
+    add_subdirectory(${glad_SOURCE_DIR}/cmake ${glad_BINARY_DIR})
+endif()
+
+glad_add_library(glad REPRODUCIBLE API gl:core=3.3)
+
 target_link_libraries(xie_engine
     PUBLIC
         glfw
+        glad
+        spdlog::spdlog
 )
+
+if (WIN32)
+    target_link_libraries(xie_engine PUBLIC opengl32)
+endif()

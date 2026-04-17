@@ -1,31 +1,31 @@
 #pragma once
 
 #include <string>
+#include <spdlog/spdlog.h>
 
 namespace Engine {
 
-class Log {
-public:
-    enum class Level {
-        Green,
-        OkBut,
-        NotAllow,
-        Warn,
-        Error,
-        Info
+
+    static std::shared_ptr<spdlog::logger> m_enginelogger;
+    static std::shared_ptr<spdlog::logger> m_clientlogger;
+
+    class Log {
+    public:
+        enum class Level {
+            Info,
+            Warn,
+            Error
+        };
+
+        static void Init();
+
+        static void log(spdlog::level::level_enum level, const std::string& message, const char* file, int line);
+    
     };
-
-    static void Init();
-
-    static void log(Level level, const std::string& message, const char* file = nullptr, int line = 0);
-};
 
 } // namespace Engine
 
 #define XLOG(level, message) Engine::Log::log((level), (message), __FILE__, __LINE__)
-#define XLOG_INFO(message)    XLOG(Engine::Log::Level::Info, (message))
-#define XLOG_WARN(message)    XLOG(Engine::Log::Level::Warn, (message))
-#define XLOG_ERROR(message)   XLOG(Engine::Log::Level::Error, (message))
-#define XLOG_OKBUT(message)   XLOG(Engine::Log::Level::OkBut, (message))
-#define XLOG_NOTALLOW(message) XLOG(Engine::Log::Level::NotAllow, (message))
-#define XLOG_GREEN(message)   XLOG(Engine::Log::Level::Green, (message))
+#define XLOG_INFO(message)    XLOG(spdlog::level::info, (message))
+#define XLOG_WARN(message)    XLOG(spdlog::level::warn, (message))
+#define XLOG_ERROR(message)   XLOG(spdlog::level::err, (message))
