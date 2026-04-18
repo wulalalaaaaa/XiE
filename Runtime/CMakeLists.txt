@@ -15,13 +15,23 @@ target_link_libraries(xie_runtime
         xie_engine
 )
 
-# 运行前自动把依赖 DLL 复制到 xie_runtime.exe 同目录（解决找不到 xie_engine.dll）
+# VS 调试时工作目录固定到项目根目录，资源从 Runtime/Assets 读取
+set_target_properties(xie_runtime PROPERTIES
+    VS_DEBUGGER_WORKING_DIRECTORY "${CMAKE_SOURCE_DIR}"
+)
+
+# 运行前自动把依赖 DLL 与数据文件复制到 xie_runtime.exe 同目录
 if (WIN32)
     add_custom_command(TARGET xie_runtime POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy_if_different
             $<TARGET_FILE:xie_engine>
             $<TARGET_FILE_DIR:xie_runtime>
-        COMMENT "Copy xie_engine.dll next to xie_runtime.exe"
+        COMMAND ${CMAKE_COMMAND} -E make_directory
+            $<TARGET_FILE_DIR:xie_runtime>/Assets
+        COMMAND ${CMAKE_COMMAND} -E copy_if_different
+            ${CMAKE_CURRENT_SOURCE_DIR}/Assets/triangle.txt
+            $<TARGET_FILE_DIR:xie_runtime>/Assets/triangle.txt
+        COMMENT "Copy runtime dependencies and triangle asset"
         VERBATIM
     )
 endif()

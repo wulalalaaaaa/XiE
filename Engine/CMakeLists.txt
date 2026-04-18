@@ -11,6 +11,17 @@ add_library(xie_engine SHARED
 
 target_compile_features(xie_engine PUBLIC cxx_std_20)
 
+# Build mode macro for compile-time feature branching in engine code
+# Debug-like configs => XIE_DEBUG=1, Release => XIE_DEBUG=0
+# (works for multi-config generators like Visual Studio)
+target_compile_definitions(xie_engine
+    PUBLIC
+        $<$<CONFIG:Debug>:XIE_DEBUG=1>
+        $<$<CONFIG:RelWithDebInfo>:XIE_DEBUG=1>
+        $<$<CONFIG:MinSizeRel>:XIE_DEBUG=0>
+        $<$<CONFIG:Release>:XIE_DEBUG=0>
+)
+
 target_include_directories(xie_engine
     PUBLIC
         ${CMAKE_CURRENT_SOURCE_DIR}
@@ -72,6 +83,25 @@ target_link_libraries(xie_engine
         glad
         spdlog::spdlog
 )
+
+# Enforce consistent MSVC runtime on all local/third-party targets to avoid LNK4098.
+if (MSVC)
+    set(_XIE_MSVC_RT "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+
+    set_property(TARGET xie_engine PROPERTY MSVC_RUNTIME_LIBRARY "${_XIE_MSVC_RT}")
+
+    if (TARGET glad)
+        set_property(TARGET glad PROPERTY MSVC_RUNTIME_LIBRARY "${_XIE_MSVC_RT}")
+    endif()
+
+    if (TARGET glfw)
+        set_property(TARGET glfw PROPERTY MSVC_RUNTIME_LIBRARY "${_XIE_MSVC_RT}")
+    endif()
+
+    if (TARGET spdlog)
+        set_property(TARGET spdlog PROPERTY MSVC_RUNTIME_LIBRARY "${_XIE_MSVC_RT}")
+    endif()
+endif()
 
 if (WIN32)
     target_link_libraries(xie_engine PUBLIC opengl32)

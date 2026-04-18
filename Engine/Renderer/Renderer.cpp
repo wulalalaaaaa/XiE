@@ -1,162 +1,79 @@
 #include "Renderer.h"
 
 #include "Core/Log.h"
+#include "OpenGLBackend.h"
 
-#include <glad/gl.h>
 #include <GLFW/glfw3.h>
 
 namespace Engine {
 
-namespace {
+template <bool Debug>
+bool BasicRenderer<Debug>::Init(GLFWwindow* windowHandle, const std::filesystem::path& triangleFilePath) {
+    m_WindowHandle = windowHandle;
 
-unsigned int CompileShader(unsigned int type, const char* source) {
-    const unsigned int shader = glCreateShader(type);
-    glShaderSource(shader, 1, &source, nullptr);
-    glCompileShader(shader);
-
-    int success = 0;
-    glGetShaderiv(shader, GL_COMPILE_STATUS, &success);
-    if (success == 0) {
-        char infoLog[1024] = {0};
-        glGetShaderInfoLog(shader, 1024, nullptr, infoLog);
-        XLOG_ERROR(infoLog);
-        glDeleteShader(shader);
-        return 0;
-    }
-
-    return shader;
-}
-
-} // namespace
-
-bool Renderer::Init(GLFWwindow* windowHandle) {
-    if (!InitOpenGLFunctions(windowHandle)) {
+    m_Backend = std::make_unique<OpenGLBackend>();
+    if (!m_Backend->Init(windowHandle)) {
+        XLOG_ERROR("Failed to initialize render backend");
         return false;
     }
 
-    if (!CreateTrianglePipeline()) {
+    if (!m_TriangleAsset.LoadFromFile(triangleFilePath)) {
         return false;
     }
 
-    glViewport(0, 0, 1280, 720);
+    UpdateViewport();
+    UpdateTriangleBuffer();
     return true;
 }
 
-bool Renderer::InitOpenGLFunctions(GLFWwindow* windowHandle) {
-    if (windowHandle == nullptr) {
-        XLOG_ERROR("Renderer::InitOpenGLFunctions got null window");
-        return false;
-    }
-
-    if (!gladLoadGL(glfwGetProcAddress)) {
-        XLOG_ERROR("Failed to initialize GLAD");
-        return false;
-    }
-
-    return true;
+template <bool Debug>
+void BasicRenderer<Debug>::UpdateViewport() {
+    int width = 0;
+    int height = 0;
+    glfwGetFramebufferSize(m_WindowHandle, &width, &height);
+    m_Backend->SetViewport(width, height);
 }
 
-bool Renderer::CreateTrianglePipeline() {
-    constexpr const char* kVertexShaderSrc = R"(
-#version 330 core
-layout(location = 0) in vec2 aPos;
+template <bool Debug>
+void BasicRenderer<Debug>::UpdateTriangleBuffer() {
+    int width = 0;
+    int height = 0;
+    glfwGetFramebufferSize(m_WindowHandle, &width, &height);
 
-void main() {
-    gl_Position = vec4(aPos, 0.0, 1.0);
-}
-)";
-
-    constexpr const char* kFragmentShaderSrc = R"(
-#version 330 core
-out vec4 FragColor;
-
-void main() {
-    FragColor = vec4(0.12, 0.68, 0.96, 1.0);
-}
-)";
-
-    const unsigned int vertexShader = CompileShader(GL_VERTEX_SHADER, kVertexShaderSrc);
-    if (vertexShader == 0) {
-        return false;
-    }
-
-    const unsigned int fragmentShader = CompileShader(GL_FRAGMENT_SHADER, kFragmentShaderSrc);
-    if (fragmentShader == 0) {
-        glDeleteShader(vertexShader);
-        return false;
-    }
-
-    m_ShaderProgram = glCreateProgram();
-    glAttachShader(m_ShaderProgram, vertexShader);
-    glAttachShader(m_ShaderProgram, fragmentShader);
-    glLinkProgram(m_ShaderProgram);
-
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    int success = 0;
-    glGetProgramiv(m_ShaderProgram, GL_LINK_STATUS, &success);
-    if (success == 0) {
-        char infoLog[1024] = {0};
-        glGetProgramInfoLog(m_ShaderProgram, 1024, nullptr, infoLog);
-        XLOG_ERROR(infoLog);
-
-        glDeleteProgram(m_ShaderProgram);
-        m_ShaderProgram = 0;
-        return false;
-    }
-
-    constexpr float kVertices[] = {
-         0.0f,  0.6f,
-        -0.6f, -0.6f,
-         0.6f, -0.6f,
-    };
-
-    glGenVertexArrays(1, &m_VAO);
-    glGenBuffers(1, &m_VBO);
-
-    glBindVertexArray(m_VAO);
-
-    glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(kVertices), kVertices, GL_STATIC_DRAW);
-
-    glEnableVertexAttribArray(0);
-    glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), static_cast<void*>(nullptr));
-
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
-    glBindVertexArray(0);
-
-    return true;
+    const auto& verticesNdc = m_TriangleAsset.GetVerticesNdc(width, height);
+    m_Backend->UploadTriangleVertices(verticesNdc.data(), static_cast<int>(verticesNdc.size()));
 }
 
-void Renderer::BeginFrame() {
-    glClearColor(0.08f, 0.08f, 0.10f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
+template <bool Debug>
+void BasicRenderer<Debug>::BeginFrame() {
+    if constexpr (Debug) {
+        if (m_TriangleAsset.ReloadIfChanged()) {
+            UpdateTriangleBuffer();
+        }
+    }
 
-    glUseProgram(m_ShaderProgram);
-    glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
-    glBindVertexArray(0);
-    glUseProgram(0);
+    UpdateViewport();
+    m_Backend->BeginFrame();
+    m_Backend->DrawTriangle();
 }
 
-void Renderer::EndFrame() {}
-
-void Renderer::Shutdown() {
-    if (m_VBO != 0) {
-        glDeleteBuffers(1, &m_VBO);
-        m_VBO = 0;
-    }
-
-    if (m_VAO != 0) {
-        glDeleteVertexArrays(1, &m_VAO);
-        m_VAO = 0;
-    }
-
-    if (m_ShaderProgram != 0) {
-        glDeleteProgram(m_ShaderProgram);
-        m_ShaderProgram = 0;
-    }
+template <bool Debug>
+void BasicRenderer<Debug>::EndFrame() {
+    m_Backend->EndFrame();
 }
+
+template <bool Debug>
+void BasicRenderer<Debug>::Shutdown() {
+    if (m_Backend) {
+        m_Backend->Shutdown();
+        m_Backend.reset();
+    }
+
+    m_WindowHandle = nullptr;
+}
+
+// explicit template instantiations for DLL build
+template class BasicRenderer<true>;
+template class BasicRenderer<false>;
 
 } // namespace Engine

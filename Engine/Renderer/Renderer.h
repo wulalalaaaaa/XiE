@@ -1,24 +1,32 @@
 #pragma once
 
+#include "TriangleAsset.h"
+#include "IRenderBackend.h"
+#include <filesystem>
+#include <memory>
+
 struct GLFWwindow;
 
 namespace Engine {
 
-class Renderer {
-public:
-    bool Init(GLFWwindow* windowHandle);
-    void BeginFrame();
-    void EndFrame();
-    void Shutdown();
+template <bool Debug>
+class BasicRenderer {
+    public:
+        bool Init(GLFWwindow* windowHandle, const std::filesystem::path& triangleFilePath);
+        void BeginFrame();
+        void EndFrame();
+        void Shutdown();
 
-private:
-    bool InitOpenGLFunctions(GLFWwindow* windowHandle);
-    bool CreateTrianglePipeline();
+    private:
+        void UpdateViewport();
+        void UpdateTriangleBuffer();
 
-private:
-    unsigned int m_VAO = 0;
-    unsigned int m_VBO = 0;
-    unsigned int m_ShaderProgram = 0;
+    private:
+        GLFWwindow* m_WindowHandle = nullptr;
+        TriangleAsset m_TriangleAsset;
+        std::unique_ptr<IRenderBackend> m_Backend;
 };
+
+using Renderer = BasicRenderer<(XIE_DEBUG != 0)>;
 
 } // namespace Engine

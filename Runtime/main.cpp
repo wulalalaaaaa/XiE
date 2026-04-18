@@ -3,5 +3,5 @@
 int main() {
     Engine::Application app;
     app.Run();
-    return 1;
+    return 0;
 }
