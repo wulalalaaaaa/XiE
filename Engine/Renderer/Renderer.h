@@ -1,7 +1,8 @@
 #pragma once
 
-#include "TriangleAsset.h"
 #include "IRenderBackend.h"
+#include "Feature/IRenderFeature.h"
+
 #include <filesystem>
 #include <memory>
 
@@ -11,20 +12,29 @@ namespace Engine {
 
 template <bool Debug>
 class BasicRenderer {
-    public:
-        bool Init(GLFWwindow* windowHandle, const std::filesystem::path& triangleFilePath);
-        void BeginFrame();
-        void EndFrame();
-        void Shutdown();
+public:
+    enum class Mode {
+        Mode2D,
+        Mode3D
+    };
 
-    private:
-        void UpdateViewport();
-        void UpdateTriangleBuffer();
+    bool Init(GLFWwindow* windowHandle, const std::filesystem::path& meshFilePath);
+    void Tick(float dt);
+    void BeginFrame();
+    void EndFrame();
+    void Shutdown();
 
-    private:
-        GLFWwindow* m_WindowHandle = nullptr;
-        TriangleAsset m_TriangleAsset;
-        std::unique_ptr<IRenderBackend> m_Backend;
+private:
+    bool InitFeature();
+
+private:
+    GLFWwindow* m_WindowHandle = nullptr;
+    Mode m_Mode = Mode::Mode2D;
+
+    std::filesystem::path m_MeshFilePath;
+
+    std::unique_ptr<IRenderBackend> m_Backend;
+    std::unique_ptr<IRenderFeature> m_Feature;
 };
 
 using Renderer = BasicRenderer<(XIE_DEBUG != 0)>;

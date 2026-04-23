@@ -16,16 +16,30 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 # Release-> /MD
 if (MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+
+    # Extra hardening for targets that may ignore MSVC_RUNTIME_LIBRARY (some generated C targets)
+    add_compile_options(
+        $<$<CONFIG:Debug>:/MDd>
+        $<$<CONFIG:Release>:/MD>
+        $<$<CONFIG:RelWithDebInfo>:/MD>
+        $<$<CONFIG:MinSizeRel>:/MD>
+    )
 endif()
 
-# spdlog is mandatory for this project
-if (NOT EXISTS "${CMAKE_SOURCE_DIR}/ThirdLibraries/spdlog/CMakeLists.txt")
-    message(FATAL_ERROR "Missing required submodule: ThirdLibraries/spdlog. Run: git submodule update --init --recursive")
+# spdlog is mandatory for this project.
+# Prefer the new location under Engine/ThirdLibraries, while keeping a fallback for old layout.
+set(XIE_SPDLOG_DIR "${CMAKE_SOURCE_DIR}/Engine/ThirdLibraries/spdlog")
+if (NOT EXISTS "${XIE_SPDLOG_DIR}/CMakeLists.txt")
+    set(XIE_SPDLOG_DIR "${CMAKE_SOURCE_DIR}/ThirdLibraries/spdlog")
+endif()
+if (NOT EXISTS "${XIE_SPDLOG_DIR}/CMakeLists.txt")
+    message(FATAL_ERROR "Missing required submodule: Engine/ThirdLibraries/spdlog (or ThirdLibraries/spdlog). Run: git submodule update --init --recursive")
 endif()
 
-add_subdirectory(ThirdLibraries/spdlog)
+add_subdirectory("${XIE_SPDLOG_DIR}" "${CMAKE_BINARY_DIR}/_deps/spdlog")
 add_subdirectory(Engine)
-add_subdirectory(Runtime)
+add_subdirectory(XiE_Projects/test2Dgame)
+add_subdirectory(Engine/Launch)
 
 # Visual Studio: default startup target should be runnable app, not ALL_BUILD
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT xie_runtime)
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT xie_launch)

@@ -1,0 +1,14 @@
+xie_mesh 1
+
+# Vertex list (2D)
+v 120 120
+v 320 120
+v 320 320
+v 120 320
+v 460 220
+
+# Faces use zero-based indices.
+# Quads are allowed and will be triangulated on load.
+f 0 1 2 3
+f 1 4 2
+

@@ -43,9 +43,10 @@ bool OpenGLBackend::CreateTrianglePipeline() {
     constexpr const char* kVertexShaderSrc = R"(
 #version 330 core
 layout(location = 0) in vec2 aPos;
+uniform mat4 u_ViewProj;
 
 void main() {
-    gl_Position = vec4(aPos, 0.0, 1.0);
+    gl_Position = u_ViewProj * vec4(aPos, 0.0, 1.0);
 }
 )";
 
@@ -89,13 +90,23 @@ void main() {
         return false;
     }
 
+    m_ViewProjLocation = glGetUniformLocation(m_ShaderProgram, "u_ViewProj");
+    if (m_ViewProjLocation < 0) {
+        XLOG_ERROR("Failed to find uniform u_ViewProj");
+        return false;
+    }
+
     glGenVertexArrays(1, &m_VAO);
     glGenBuffers(1, &m_VBO);
+    glGenBuffers(1, &m_EBO);
 
     glBindVertexArray(m_VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(float) * 6, nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, 0, nullptr, GL_DYNAMIC_DRAW);
 
     glEnableVertexAttribArray(0);
     glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, 2 * sizeof(float), static_cast<void*>(nullptr));
@@ -110,14 +121,32 @@ void OpenGLBackend::SetViewport(int width, int height) {
     glViewport(0, 0, width, height);
 }
 
-void OpenGLBackend::UploadTriangleVertices(const float* vertices, int floatCount) {
-    if (vertices == nullptr || floatCount != 6) {
+void OpenGLBackend::UploadMesh(const float* vertices, int vertexFloatCount, const unsigned int* indices, int indexCount) {
+    if (vertices == nullptr || indices == nullptr || vertexFloatCount < 6 || (vertexFloatCount % 2) != 0 || indexCount < 3 || (indexCount % 3) != 0) {
         return;
     }
 
+    m_IndexCount = indexCount;
+
+    glBindVertexArray(m_VAO);
+
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO);
-    glBufferSubData(GL_ARRAY_BUFFER, 0, sizeof(float) * 6, vertices);
-    glBindBuffer(GL_ARRAY_BUFFER, 0);
+    glBufferData(GL_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(float) * vertexFloatCount), vertices, GL_DYNAMIC_DRAW);
+
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, static_cast<GLsizeiptr>(sizeof(unsigned int) * indexCount), indices, GL_DYNAMIC_DRAW);
+
+    glBindVertexArray(0);
+}
+
+void OpenGLBackend::SetViewProjection(const float* matrix4x4) {
+    if (matrix4x4 == nullptr || m_ViewProjLocation < 0 || m_ShaderProgram == 0) {
+        return;
+    }
+
+    glUseProgram(m_ShaderProgram);
+    glUniformMatrix4fv(m_ViewProjLocation, 1, GL_FALSE, matrix4x4);
+    glUseProgram(0);
 }
 
 void OpenGLBackend::BeginFrame() {
@@ -125,10 +154,14 @@ void OpenGLBackend::BeginFrame() {
     glClear(GL_COLOR_BUFFER_BIT);
 }
 
-void OpenGLBackend::DrawTriangle() {
+void OpenGLBackend::DrawMesh() {
+    if (m_IndexCount <= 0) {
+        return;
+    }
+
     glUseProgram(m_ShaderProgram);
     glBindVertexArray(m_VAO);
-    glDrawArrays(GL_TRIANGLES, 0, 3);
+    glDrawElements(GL_TRIANGLES, m_IndexCount, GL_UNSIGNED_INT, nullptr);
     glBindVertexArray(0);
     glUseProgram(0);
 }
@@ -136,6 +169,13 @@ void OpenGLBackend::DrawTriangle() {
 void OpenGLBackend::EndFrame() {}
 
 void OpenGLBackend::Shutdown() {
+    m_IndexCount = 0;
+
+    if (m_EBO != 0) {
+        glDeleteBuffers(1, &m_EBO);
+        m_EBO = 0;
+    }
+
     if (m_VBO != 0) {
         glDeleteBuffers(1, &m_VBO);
         m_VBO = 0;

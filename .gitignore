@@ -1,6 +1,7 @@
 # Visual Studio 2015 user specific files
-.vs/
+.vs/*
 .idea/**
+.cursor/*
 
 # Binary Files
 Binaries/*
@@ -8,3 +9,9 @@ Plugins/**/Binaries/*
 
 # Builds
 vs_build/*
+out/*
+
+
+临时/*
+Docs/*
+

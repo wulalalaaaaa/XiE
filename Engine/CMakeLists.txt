@@ -3,6 +3,9 @@ file(GLOB_RECURSE XIE_ENGINE_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
 )
+list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]ThirdLibraries[\\\\/].*")
+list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]Runtime[\\\\/].*")
+list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]Launch[\\\\/].*")
 
 # 改为 DLL（共享库）
 add_library(xie_engine SHARED
@@ -69,9 +72,8 @@ FetchContent_Declare(
     GIT_TAG v2.0.8
 )
 
-FetchContent_GetProperties(glad)
-if (NOT glad_POPULATED)
-    FetchContent_Populate(glad)
+FetchContent_MakeAvailable(glad)
+if (NOT COMMAND glad_add_library)
     add_subdirectory(${glad_SOURCE_DIR}/cmake ${glad_BINARY_DIR})
 endif()
 
