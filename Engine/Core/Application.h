@@ -27,12 +27,16 @@ private:
 
 private:
     std::filesystem::path ResolveMeshAssetPath() const;
+    std::filesystem::path ResolveTextureAssetPath() const;
+    std::filesystem::path ResolveMaterialAssetPath() const;
+    std::filesystem::path ResolveSpriteAssetPath() const;
     std::filesystem::path ResolveAssetRoot() const;
 
 private:
     std::unique_ptr<Window> m_Window;
     std::unique_ptr<Renderer> m_Renderer;
     std::unique_ptr<IGameApp> m_GameApp;
+    FrameContext m_FrameContext{};
     GameStartupDesc m_StartupDesc{};
     bool m_Running = false;
     float currentTime = 0.0f;

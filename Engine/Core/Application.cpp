@@ -29,6 +29,18 @@ std::filesystem::path Application::ResolveMeshAssetPath() const {
     return ResolveAssetRoot() / "Mesh" / "main.xmesh";
 }
 
+std::filesystem::path Application::ResolveTextureAssetPath() const {
+    return ResolveAssetRoot() / "Texture" / "main.xtexture";
+}
+
+std::filesystem::path Application::ResolveMaterialAssetPath() const {
+    return ResolveAssetRoot() / "Material" / "main.xmat";
+}
+
+std::filesystem::path Application::ResolveSpriteAssetPath() const {
+    return ResolveAssetRoot() / "Sprite" / "main.xsprite";
+}
+
 bool Application::Init() {
     Log::Init();
 
@@ -42,12 +54,20 @@ bool Application::Init() {
     const char* title = (m_StartupDesc.GameName != nullptr && m_StartupDesc.GameName[0] != '\0') ? m_StartupDesc.GameName : "XiE Game";
 
     m_Window = std::make_unique<Window>(width, height, title);
+    m_FrameContext.WindowHandle = m_Window->GetNativeHandle();
     m_Renderer = std::make_unique<Renderer>();
 
-    if (!m_Renderer->Init(m_Window->GetNativeHandle(), ResolveMeshAssetPath())) {
+    if (!m_Renderer->Init(
+            m_Window->GetNativeHandle(),
+            ResolveMeshAssetPath(),
+            ResolveTextureAssetPath(),
+            ResolveMaterialAssetPath(),
+            ResolveSpriteAssetPath(),
+            m_StartupDesc.UVMode)) {
         XLOG_ERROR("Renderer initialization failed");
         return false;
     }
+    m_FrameContext.RuntimeRender2D = m_Renderer.get();
 
     m_Running = true;
     currentTime = static_cast<float>(glfwGetTime());
@@ -69,7 +89,7 @@ void Application::Run() {
         }
 
         if (m_GameApp) {
-            m_GameApp->OnInit();
+            m_GameApp->OnInit(m_FrameContext);
         }
 
         while (m_Running && !m_Window->ShouldClose()) {
@@ -79,11 +99,11 @@ void Application::Run() {
 
             m_Renderer->Tick(deltaTime);
             if (m_GameApp) {
-                m_GameApp->OnUpdate(deltaTime);
+                m_GameApp->OnUpdate(deltaTime, m_FrameContext);
             }
             m_Renderer->BeginFrame();
             if (m_GameApp) {
-                m_GameApp->OnRender();
+                m_GameApp->OnRender(m_FrameContext);
             }
             TickPlatform(deltaTime);
 
@@ -100,7 +120,7 @@ void Application::Shutdown() {
     }
 
     if (m_GameApp) {
-        m_GameApp->OnShutdown();
+        m_GameApp->OnShutdown(m_FrameContext);
         m_GameApp.reset();
     }
 
@@ -108,8 +128,10 @@ void Application::Shutdown() {
         m_Renderer->Shutdown();
         m_Renderer.reset();
     }
+    m_FrameContext.RuntimeRender2D = nullptr;
 
     m_Window.reset();
+    m_FrameContext.WindowHandle = nullptr;
     glfwTerminate();
 
     m_Running = false;

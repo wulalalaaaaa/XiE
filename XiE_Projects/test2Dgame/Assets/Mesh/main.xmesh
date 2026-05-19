@@ -7,8 +7,15 @@ v 320 320
 v 120 320
 v 460 220
 
-# Faces use zero-based indices.
-# Quads are allowed and will be triangulated on load.
-f 0 1 2 3
-f 1 4 2
+# UV list (0-based), authored explicitly for full control.
+vt 0.0 0.0
+vt 1.0 0.0
+vt 1.0 1.0
+vt 0.0 1.0
+vt 1.4 0.5
 
+# Faces use zero-based indices.
+# Quads are allowed and triangulated on load.
+# UV can be bound per-corner via i/ui.
+f 0/0 1/1 2/2 3/3
+f 1/1 4/4 2/2

@@ -27,13 +27,16 @@ if (MSVC)
 endif()
 
 # spdlog is mandatory for this project.
-# Prefer the new location under Engine/ThirdLibraries, while keeping a fallback for old layout.
-set(XIE_SPDLOG_DIR "${CMAKE_SOURCE_DIR}/Engine/ThirdLibraries/spdlog")
+# Prefer the standardized location under Engine/External, while keeping fallbacks.
+set(XIE_SPDLOG_DIR "${CMAKE_SOURCE_DIR}/Engine/External/spdlog")
+if (NOT EXISTS "${XIE_SPDLOG_DIR}/CMakeLists.txt")
+    set(XIE_SPDLOG_DIR "${CMAKE_SOURCE_DIR}/Engine/ThirdLibraries/spdlog")
+endif()
 if (NOT EXISTS "${XIE_SPDLOG_DIR}/CMakeLists.txt")
     set(XIE_SPDLOG_DIR "${CMAKE_SOURCE_DIR}/ThirdLibraries/spdlog")
 endif()
 if (NOT EXISTS "${XIE_SPDLOG_DIR}/CMakeLists.txt")
-    message(FATAL_ERROR "Missing required submodule: Engine/ThirdLibraries/spdlog (or ThirdLibraries/spdlog). Run: git submodule update --init --recursive")
+    message(FATAL_ERROR "Missing required submodule: Engine/External/spdlog (or Engine/ThirdLibraries/spdlog, ThirdLibraries/spdlog). Run: git submodule update --init --recursive")
 endif()
 
 add_subdirectory("${XIE_SPDLOG_DIR}" "${CMAKE_BINARY_DIR}/_deps/spdlog")

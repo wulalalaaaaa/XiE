@@ -1,0 +1,5 @@
+xie_atlas 1
+texture ../Texture/main.xtexture
+region checker_full 0.0 0.0 1.0 1.0
+region checker_center 0.25 0.25 0.75 0.75
+

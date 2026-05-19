@@ -12,7 +12,10 @@ enum class AssetType {
     Unknown = 0,
     Shader,
     Texture,
+    Material,
     Mesh,
+    Sprite,
+    Atlas,
 };
 
 enum class AssetStatus {

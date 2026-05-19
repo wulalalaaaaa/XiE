@@ -10,7 +10,18 @@ public:
 
     virtual bool Init(GLFWwindow* windowHandle) = 0;
     virtual void SetViewport(int width, int height) = 0;
-    virtual void UploadMesh(const float* vertices, int vertexFloatCount, const unsigned int* indices, int indexCount) = 0;
+    virtual void UploadMesh(
+        const float* vertices,
+        int vertexCount,
+        int vertexDimension,
+        const float* uvs,
+        int uvCount,
+        const unsigned int* indices,
+        int indexCount
+    ) = 0;
+    virtual void UploadTextureRGBA8(const unsigned char* pixels, int width, int height) = 0;
+    virtual void ClearTexture() = 0;
+    virtual void SetMaterialTint(const float* rgba) = 0;
     virtual void SetViewProjection(const float* matrix4x4) = 0;
     virtual void BeginFrame() = 0;
     virtual void DrawMesh() = 0;

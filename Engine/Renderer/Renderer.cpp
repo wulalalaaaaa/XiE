@@ -9,9 +9,20 @@
 namespace Engine {
 
 template <bool Debug>
-bool BasicRenderer<Debug>::Init(GLFWwindow* windowHandle, const std::filesystem::path& meshFilePath) {
+bool BasicRenderer<Debug>::Init(
+    GLFWwindow* windowHandle,
+    const std::filesystem::path& meshFilePath,
+    const std::filesystem::path& textureFilePath,
+    const std::filesystem::path& materialFilePath,
+    const std::filesystem::path& spriteFilePath,
+    int uvMode
+) {
     m_WindowHandle = windowHandle;
     m_MeshFilePath = meshFilePath;
+    m_TextureFilePath = textureFilePath;
+    m_MaterialFilePath = materialFilePath;
+    m_SpriteFilePath = spriteFilePath;
+    m_UVMode = uvMode;
 
     m_Backend = std::make_unique<OpenGLBackend>();
     if (!m_Backend->Init(windowHandle)) {
@@ -24,16 +35,37 @@ bool BasicRenderer<Debug>::Init(GLFWwindow* windowHandle, const std::filesystem:
 
 template <bool Debug>
 bool BasicRenderer<Debug>::InitFeature() {
+    m_Feature2D = nullptr;
+
     switch (m_Mode) {
     case Mode::Mode2D: {
         auto feature2D = std::make_unique<Renderer2DFeature>();
         feature2D->SetMeshAssetPath(m_MeshFilePath);
+        feature2D->SetTextureAssetPath(m_TextureFilePath);
+        feature2D->SetMaterialAssetPath(m_MaterialFilePath);
+        feature2D->SetSpriteAssetPath(m_SpriteFilePath);
+        switch (m_UVMode) {
+        case 0:
+            feature2D->SetUVControlMode(Renderer2DFeature::UVControlMode::AutoGenerate);
+            break;
+        case 2:
+            feature2D->SetUVControlMode(Renderer2DFeature::UVControlMode::RequireAsset);
+            break;
+        case 1:
+        default:
+            feature2D->SetUVControlMode(Renderer2DFeature::UVControlMode::PreferAsset);
+            break;
+        }
+        m_Feature2D = feature2D.get();
         m_Feature = std::move(feature2D);
         break;
     }
-    case Mode::Mode3D:
-        m_Feature = std::make_unique<Renderer3DFeature>();
+    case Mode::Mode3D: {
+        auto feature3D = std::make_unique<Renderer3DFeature>();
+        feature3D->SetMeshAssetPath(m_MeshFilePath);
+        m_Feature = std::move(feature3D);
         break;
+    }
     default:
         XLOG_ERROR("Unknown renderer mode");
         return false;
@@ -70,6 +102,7 @@ void BasicRenderer<Debug>::Shutdown() {
         m_Feature->Shutdown(*m_Backend);
         m_Feature.reset();
     }
+    m_Feature2D = nullptr;
 
     if (m_Backend) {
         m_Backend->Shutdown();
@@ -77,6 +110,32 @@ void BasicRenderer<Debug>::Shutdown() {
     }
 
     m_WindowHandle = nullptr;
+}
+
+template <bool Debug>
+bool BasicRenderer<Debug>::SubmitRuntimeMesh2D(
+    const float* vertices,
+    int vertexCount,
+    int vertexDimension,
+    const float* uvs,
+    int uvCount,
+    const unsigned int* indices,
+    int indexCount
+) {
+    if (m_Feature2D == nullptr) {
+        return false;
+    }
+
+    return m_Feature2D->SubmitRuntimeMesh(vertices, vertexCount, vertexDimension, uvs, uvCount, indices, indexCount);
+}
+
+template <bool Debug>
+void BasicRenderer<Debug>::ClearRuntimeMesh2D() {
+    if (m_Feature2D == nullptr) {
+        return;
+    }
+
+    m_Feature2D->ClearRuntimeMesh();
 }
 
 // explicit template instantiations for DLL build

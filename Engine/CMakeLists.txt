@@ -4,6 +4,7 @@ file(GLOB_RECURSE XIE_ENGINE_SOURCES CONFIGURE_DEPENDS
     "${CMAKE_CURRENT_SOURCE_DIR}/*.h"
 )
 list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]ThirdLibraries[\\\\/].*")
+list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]External[\\\\/].*")
 list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]Runtime[\\\\/].*")
 list(FILTER XIE_ENGINE_SOURCES EXCLUDE REGEX ".*[\\\\/]Launch[\\\\/].*")
 
@@ -41,26 +42,40 @@ source_group(TREE ${CMAKE_CURRENT_SOURCE_DIR} FILES ${XIE_ENGINE_SOURCES})
 include(FetchContent)
 
 option(XIE_USE_SYSTEM_GLFW "Use system-installed GLFW when available" ON)
+option(XIE_GLFW_USE_LOCAL_SOURCE "Prefer local GLFW source from Engine/External/glfw" ON)
+set(XIE_GLFW_LOCAL_DIR "${CMAKE_SOURCE_DIR}/Engine/External/glfw" CACHE PATH "Local GLFW source directory")
+set(XIE_GLFW_LEGACY_LOCAL_DIR "${CMAKE_SOURCE_DIR}/Engine/ThirdLibraries/glfw")
+set(XIE_GLFW_GIT_REPOSITORY "https://github.com/glfw/glfw.git" CACHE STRING "GLFW git repository URL")
+set(XIE_GLFW_GIT_TAG "3.4" CACHE STRING "GLFW git tag/branch")
+set(XIE_GLAD_LOCAL_DIR "${CMAKE_SOURCE_DIR}/Engine/External/glad" CACHE PATH "Local GLAD source directory")
+set(XIE_GLAD_GIT_REPOSITORY "https://github.com/Dav1dde/glad.git" CACHE STRING "GLAD git repository URL")
+set(XIE_GLAD_GIT_TAG "v2.0.8" CACHE STRING "GLAD git tag/branch")
 
 if (XIE_USE_SYSTEM_GLFW)
     find_package(glfw3 CONFIG QUIET)
 endif()
 
 if (NOT TARGET glfw)
-    message(STATUS "GLFW not found on system, fetching GLFW from GitHub...")
-
     set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
     set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
     set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
 
-    FetchContent_Declare(
-        glfw
-        GIT_REPOSITORY https://github.com/glfw/glfw.git
-        GIT_TAG 3.4
-    )
-
-    FetchContent_MakeAvailable(glfw)
+    if (XIE_GLFW_USE_LOCAL_SOURCE AND EXISTS "${XIE_GLFW_LOCAL_DIR}/CMakeLists.txt")
+        add_subdirectory("${XIE_GLFW_LOCAL_DIR}" "${CMAKE_BINARY_DIR}/_deps/glfw-local")
+    elseif (EXISTS "${XIE_GLFW_LEGACY_LOCAL_DIR}/CMakeLists.txt")
+        add_subdirectory("${XIE_GLFW_LEGACY_LOCAL_DIR}" "${CMAKE_BINARY_DIR}/_deps/glfw-legacy-local")
+    else()
+        FetchContent_Declare(
+            glfw
+            GIT_REPOSITORY "${XIE_GLFW_GIT_REPOSITORY}"
+            GIT_TAG "${XIE_GLFW_GIT_TAG}"
+            GIT_SHALLOW TRUE
+            GIT_PROGRESS TRUE
+            SOURCE_DIR "${XIE_GLFW_LOCAL_DIR}"
+        )
+        FetchContent_MakeAvailable(glfw)
+    endif()
 endif()
 
 # GLAD: modern OpenGL function loader
@@ -68,8 +83,11 @@ endif()
 # Make the module available before calling it.
 FetchContent_Declare(
     glad
-    GIT_REPOSITORY https://github.com/Dav1dde/glad.git
-    GIT_TAG v2.0.8
+    GIT_REPOSITORY "${XIE_GLAD_GIT_REPOSITORY}"
+    GIT_TAG "${XIE_GLAD_GIT_TAG}"
+    GIT_SHALLOW TRUE
+    GIT_PROGRESS TRUE
+    SOURCE_DIR "${XIE_GLAD_LOCAL_DIR}"
 )
 
 FetchContent_MakeAvailable(glad)
@@ -106,5 +124,5 @@ if (MSVC)
 endif()
 
 if (WIN32)
-    target_link_libraries(xie_engine PUBLIC opengl32)
+    target_link_libraries(xie_engine PUBLIC opengl32 windowscodecs ole32 uuid)
 endif()

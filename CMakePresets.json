@@ -17,7 +17,15 @@
         "CMAKE_CONFIGURATION_TYPES": "Debug;Release",
         "CMAKE_CXX_STANDARD": "20",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
-        "CMAKE_CXX_EXTENSIONS": "OFF"
+        "CMAKE_CXX_EXTENSIONS": "OFF",
+        "XIE_USE_SYSTEM_GLFW": "OFF",
+        "XIE_GLFW_USE_LOCAL_SOURCE": "ON",
+        "XIE_GLFW_LOCAL_DIR": "${sourceDir}/Engine/External/glfw",
+        "XIE_GLFW_GIT_REPOSITORY": "https://github.com/glfw/glfw.git",
+        "XIE_GLFW_GIT_TAG": "3.4",
+        "XIE_GLAD_LOCAL_DIR": "${sourceDir}/Engine/External/glad",
+        "XIE_GLAD_GIT_REPOSITORY": "https://github.com/Dav1dde/glad.git",
+        "XIE_GLAD_GIT_TAG": "v2.0.8"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
@@ -45,7 +53,15 @@
         "CMAKE_CXX_STANDARD": "20",
         "CMAKE_CXX_STANDARD_REQUIRED": "ON",
         "CMAKE_CXX_EXTENSIONS": "OFF",
-        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON"
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "XIE_USE_SYSTEM_GLFW": "OFF",
+        "XIE_GLFW_USE_LOCAL_SOURCE": "ON",
+        "XIE_GLFW_LOCAL_DIR": "${sourceDir}/Engine/External/glfw",
+        "XIE_GLFW_GIT_REPOSITORY": "https://github.com/glfw/glfw.git",
+        "XIE_GLFW_GIT_TAG": "3.4",
+        "XIE_GLAD_LOCAL_DIR": "${sourceDir}/Engine/External/glad",
+        "XIE_GLAD_GIT_REPOSITORY": "https://github.com/Dav1dde/glad.git",
+        "XIE_GLAD_GIT_TAG": "v2.0.8"
       },
       "vendor": {
         "microsoft.com/VisualStudioSettings/CMake/1.0": {
