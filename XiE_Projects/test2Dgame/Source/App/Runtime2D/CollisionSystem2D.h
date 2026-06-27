@@ -1,12 +1,9 @@
 #pragma once
 
-#include "World2D.h"
+#include <Runtime2D/CollisionSystem2D.h>
 
 namespace Test2D {
 
-class CollisionSystem2D {
-public:
-    void Solve(World2D& world) const;
-};
+using CollisionSystem2D = Engine::Runtime2D::CollisionSystem2D;
 
 } // namespace Test2D

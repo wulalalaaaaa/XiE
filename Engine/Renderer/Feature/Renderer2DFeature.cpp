@@ -512,7 +512,7 @@ void Renderer2DFeature::UploadMesh(IRenderBackend& backend, GLFWwindow* windowHa
         sprite = m_AssetManager.GetHandle<SpriteAsset>(m_SpriteAssetPath);
     }
 
-    if (sprite != nullptr) {
+    if (sprite != nullptr && !m_HasRuntimeMesh) {
         generatedUVs.resize(static_cast<std::size_t>(vertexCount * 2), 0.0f);
 
         if (activeUVs != nullptr && activeUVCount == vertexCount) {

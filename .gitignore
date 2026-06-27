@@ -14,4 +14,6 @@ out/*
 
 临时/*
 Docs/*
+!Docs/2D_MinimalLoop_Verification.md
+!Docs/2D_Engine_Implementation_Handoff.md
 

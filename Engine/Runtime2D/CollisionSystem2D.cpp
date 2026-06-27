@@ -2,7 +2,7 @@
 
 #include <cmath>
 
-namespace Test2D {
+namespace Engine::Runtime2D {
 
 namespace {
 
@@ -46,4 +46,4 @@ void CollisionSystem2D::Solve(World2D& world) const {
     }
 }
 
-} // namespace Test2D
+} // namespace Engine::Runtime2D

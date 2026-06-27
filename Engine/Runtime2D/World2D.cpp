@@ -1,6 +1,6 @@
 #include "World2D.h"
 
-namespace Test2D {
+namespace Engine::Runtime2D {
 
 EntityId World2D::CreateEntity(const Entity2D& templateData) {
     Entity2D entity = templateData;
@@ -27,6 +27,12 @@ const Entity2D* World2D::FindEntity(EntityId id) const {
     return nullptr;
 }
 
+void World2D::Clear() {
+    m_Entities.clear();
+    m_Player = kInvalidEntityId;
+    m_NextId = 1;
+}
+
 void World2D::SetPlayer(EntityId id) {
     m_Player = id;
 }
@@ -43,4 +49,4 @@ const std::vector<Entity2D>& World2D::Entities() const {
     return m_Entities;
 }
 
-} // namespace Test2D
+} // namespace Engine::Runtime2D

@@ -1,15 +1,139 @@
 #include "RenderSync2D.h"
 
+#include "Core/Log.h"
+
 #include <algorithm>
+#include <array>
 #include <cmath>
+#include <filesystem>
+#include <string>
+#include <system_error>
 #include <vector>
 
 namespace Test2D {
 
 namespace {
 
+struct RenderEntity2D {
+    const Entity2D* entity = nullptr;
+    std::array<float, 4> uvRect{0.0f, 0.0f, 1.0f, 1.0f};
+};
+
+std::string PathKey(const std::filesystem::path& path) {
+    std::error_code ec;
+    const std::filesystem::path canonical = std::filesystem::weakly_canonical(path, ec);
+    if (!ec) {
+        return canonical.generic_string();
+    }
+    return path.lexically_normal().generic_string();
+}
+
+bool SameAssetPath(const std::filesystem::path& lhs, const std::filesystem::path& rhs) {
+    if (lhs.empty() || rhs.empty()) {
+        return false;
+    }
+    return PathKey(lhs) == PathKey(rhs);
+}
+
+void WarnOnce(std::unordered_set<std::string>& warnedIssues, const std::string& key, const std::string& message) {
+    if (warnedIssues.insert(key).second) {
+        XLOG_WARN(message.c_str());
+    }
+}
+
+std::array<float, 4> GetSpriteUVRect(const Engine::SpriteAsset* sprite, const Engine::AtlasAsset* atlas) {
+    std::array<float, 4> uvRect{0.0f, 0.0f, 1.0f, 1.0f};
+    if (sprite == nullptr) {
+        return uvRect;
+    }
+
+    const float* spriteUVRect = sprite->GetUVRect();
+    if (spriteUVRect != nullptr) {
+        uvRect = {spriteUVRect[0], spriteUVRect[1], spriteUVRect[2], spriteUVRect[3]};
+    }
+
+    if (sprite->UsesAtlasRegion() && atlas != nullptr) {
+        std::array<float, 4> atlasUVRect{};
+        if (atlas->TryGetRegionUVRect(sprite->GetAtlasRegionName(), atlasUVRect)) {
+            uvRect = atlasUVRect;
+        }
+    }
+
+    return uvRect;
+}
+
+std::array<float, 4> ResolveEntityUVRect(
+    const Entity2D& entity,
+    const AssetRuntime2DSnapshot& assets,
+    std::unordered_set<std::string>& warnedIssues
+) {
+    const std::array<float, 4> fallbackUVRect = GetSpriteUVRect(assets.sprite, assets.atlas);
+    if (entity.sprite.spritePath == nullptr || entity.sprite.spritePath[0] == '\0') {
+        return fallbackUVRect;
+    }
+
+    const std::filesystem::path spritePath = std::filesystem::path(entity.sprite.spritePath).lexically_normal();
+    const Engine::SpriteAsset* sprite = assets.FindSprite(spritePath);
+    if (sprite == nullptr) {
+        WarnOnce(
+            warnedIssues,
+            "missing-sprite:" + PathKey(spritePath),
+            "RenderSync2D: missing sprite '" + spritePath.generic_string() + "', falling back to active sprite UV");
+        return fallbackUVRect;
+    }
+
+    if (sprite->UsesAtlasRegion()) {
+        const std::filesystem::path atlasPath = sprite->GetAtlasPath();
+        const Engine::AtlasAsset* atlas = assets.FindAtlas(atlasPath);
+        if (atlas == nullptr) {
+            WarnOnce(
+                warnedIssues,
+                "missing-atlas:" + PathKey(atlasPath),
+                "RenderSync2D: missing atlas '" + atlasPath.generic_string() + "' for sprite '" +
+                    spritePath.generic_string() + "', falling back to active sprite UV");
+            return fallbackUVRect;
+        }
+
+        if (!assets.texturePath.empty() && atlas->HasTexture() && !SameAssetPath(atlas->GetTexturePath(), assets.texturePath)) {
+            WarnOnce(
+                warnedIssues,
+                "different-atlas-texture:" + PathKey(spritePath),
+                "RenderSync2D: sprite '" + spritePath.generic_string() +
+                    "' uses a different atlas texture, falling back to active sprite UV");
+            return fallbackUVRect;
+        }
+
+        std::array<float, 4> atlasUVRect{};
+        if (!atlas->TryGetRegionUVRect(sprite->GetAtlasRegionName(), atlasUVRect)) {
+            WarnOnce(
+                warnedIssues,
+                "missing-region:" + PathKey(spritePath) + ":" + sprite->GetAtlasRegionName(),
+                "RenderSync2D: atlas region '" + sprite->GetAtlasRegionName() + "' missing for sprite '" +
+                    spritePath.generic_string() + "', falling back to active sprite UV");
+            return fallbackUVRect;
+        }
+
+        return atlasUVRect;
+    }
+
+    if (sprite->HasTexture() && !assets.texturePath.empty() && !SameAssetPath(sprite->GetTexturePath(), assets.texturePath)) {
+        WarnOnce(
+            warnedIssues,
+            "different-sprite-texture:" + PathKey(spritePath),
+            "RenderSync2D: sprite '" + spritePath.generic_string() +
+                "' uses a different texture, falling back to active sprite UV");
+        return fallbackUVRect;
+    }
+
+    return GetSpriteUVRect(sprite, nullptr);
+}
+
+float RemapUV(float value, float minValue, float maxValue) {
+    return minValue + value * (maxValue - minValue);
+}
+
 void BuildFallbackQuadMesh(
-    const std::vector<Entity2D>& entities,
+    const std::vector<RenderEntity2D>& entities,
     std::vector<float>& outVertices,
     std::vector<float>& outUVs,
     std::vector<unsigned int>& outIndices
@@ -18,12 +142,17 @@ void BuildFallbackQuadMesh(
     outUVs.reserve(entities.size() * 8);
     outIndices.reserve(entities.size() * 6);
 
-    for (const Entity2D& entity : entities) {
+    for (const RenderEntity2D& renderEntity : entities) {
+        const Entity2D& entity = *renderEntity.entity;
         const float left = entity.transform.position.x - entity.collider.halfExtent.x;
         const float right = entity.transform.position.x + entity.collider.halfExtent.x;
         const float top = entity.transform.position.y - entity.collider.halfExtent.y;
         const float bottom = entity.transform.position.y + entity.collider.halfExtent.y;
         const unsigned int baseVertex = static_cast<unsigned int>(outVertices.size() / 2);
+        const float uMin = renderEntity.uvRect[0];
+        const float vMin = renderEntity.uvRect[1];
+        const float uMax = renderEntity.uvRect[2];
+        const float vMax = renderEntity.uvRect[3];
 
         outVertices.push_back(left);
         outVertices.push_back(top);
@@ -34,14 +163,14 @@ void BuildFallbackQuadMesh(
         outVertices.push_back(left);
         outVertices.push_back(bottom);
 
-        outUVs.push_back(0.0f);
-        outUVs.push_back(0.0f);
-        outUVs.push_back(1.0f);
-        outUVs.push_back(0.0f);
-        outUVs.push_back(1.0f);
-        outUVs.push_back(1.0f);
-        outUVs.push_back(0.0f);
-        outUVs.push_back(1.0f);
+        outUVs.push_back(uMin);
+        outUVs.push_back(vMin);
+        outUVs.push_back(uMax);
+        outUVs.push_back(vMin);
+        outUVs.push_back(uMax);
+        outUVs.push_back(vMax);
+        outUVs.push_back(uMin);
+        outUVs.push_back(vMax);
 
         outIndices.push_back(baseVertex + 0);
         outIndices.push_back(baseVertex + 1);
@@ -60,17 +189,29 @@ void RenderSync2D::Sync(const World2D& world, const AssetRuntime2DSnapshot& asse
     }
 
     const std::vector<Entity2D>& entities = world.Entities();
-    if (entities.empty()) {
+    std::vector<RenderEntity2D> visibleEntities;
+    visibleEntities.reserve(entities.size());
+    for (const Entity2D& entity : entities) {
+        if (entity.renderable.visible) {
+            visibleEntities.push_back({&entity, ResolveEntityUVRect(entity, assets, m_WarnedSpriteIssues)});
+        }
+    }
+
+    if (visibleEntities.empty()) {
         runtimeRender2D->ClearRuntimeMesh2D();
         return;
     }
+
+    std::stable_sort(visibleEntities.begin(), visibleEntities.end(), [](const RenderEntity2D& lhs, const RenderEntity2D& rhs) {
+        return lhs.entity->renderable.layer < rhs.entity->renderable.layer;
+    });
 
     const Engine::MeshAsset* mesh = assets.mesh;
     if (mesh == nullptr) {
         std::vector<float> vertices;
         std::vector<float> uvs;
         std::vector<unsigned int> indices;
-        BuildFallbackQuadMesh(entities, vertices, uvs, indices);
+        BuildFallbackQuadMesh(visibleEntities, vertices, uvs, indices);
         runtimeRender2D->SubmitRuntimeMesh2D(
             vertices.data(),
             static_cast<int>(vertices.size() / 2),
@@ -137,9 +278,9 @@ void RenderSync2D::Sync(const World2D& world, const AssetRuntime2DSnapshot& asse
     std::vector<float> uvs;
     std::vector<unsigned int> indices;
 
-    vertices.reserve(entities.size() * static_cast<std::size_t>(vertexCount * vertexDimension));
-    uvs.reserve(entities.size() * static_cast<std::size_t>(vertexCount * 2));
-    indices.reserve(entities.size() * static_cast<std::size_t>(meshIndexCount));
+    vertices.reserve(visibleEntities.size() * static_cast<std::size_t>(vertexCount * vertexDimension));
+    uvs.reserve(visibleEntities.size() * static_cast<std::size_t>(vertexCount * 2));
+    indices.reserve(visibleEntities.size() * static_cast<std::size_t>(meshIndexCount));
 
     float minX = meshVertices[0];
     float maxX = meshVertices[0];
@@ -163,10 +304,15 @@ void RenderSync2D::Sync(const World2D& world, const AssetRuntime2DSnapshot& asse
         meshHalfHeight = 1.0f;
     }
 
-    for (const Entity2D& entity : entities) {
+    for (const RenderEntity2D& renderEntity : visibleEntities) {
+        const Entity2D& entity = *renderEntity.entity;
         const unsigned int baseVertex = static_cast<unsigned int>(vertices.size() / static_cast<std::size_t>(vertexDimension));
         const float scaleX = entity.collider.halfExtent.x / meshHalfWidth;
         const float scaleY = entity.collider.halfExtent.y / meshHalfHeight;
+        const float uMin = renderEntity.uvRect[0];
+        const float vMin = renderEntity.uvRect[1];
+        const float uMax = renderEntity.uvRect[2];
+        const float vMax = renderEntity.uvRect[3];
 
         for (int i = 0; i < vertexCount; ++i) {
             const int sourceBase = i * vertexDimension;
@@ -180,8 +326,8 @@ void RenderSync2D::Sync(const World2D& world, const AssetRuntime2DSnapshot& asse
                 vertices.push_back(meshVertices[sourceBase + 2]);
             }
 
-            uvs.push_back(baseUVs[static_cast<std::size_t>(i) * 2]);
-            uvs.push_back(baseUVs[static_cast<std::size_t>(i) * 2 + 1]);
+            uvs.push_back(RemapUV(baseUVs[static_cast<std::size_t>(i) * 2], uMin, uMax));
+            uvs.push_back(RemapUV(baseUVs[static_cast<std::size_t>(i) * 2 + 1], vMin, vMax));
         }
 
         for (int i = 0; i < meshIndexCount; ++i) {

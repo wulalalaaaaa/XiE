@@ -1,4 +1,9 @@
 move_left = "A"
 move_right = "D"
-jump = "Space"
-
+move_up = "W"
+move_down = "S"
+move_left_alt = "Left"
+move_right_alt = "Right"
+move_up_alt = "Up"
+move_down_alt = "Down"
+move_speed = 260
