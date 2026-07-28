@@ -1,25 +1,18 @@
 #pragma once
 
-struct GLFWwindow;
+#include "WindowHandle.h"
 
 namespace Engine {
 
 class Window {
 public:
-    Window(int width, int height, const char* title);
-    ~Window();
+    Window() = default;
+    explicit Window(WindowHandle handle);
 
-    Window(const Window&) = delete;
-    Window& operator=(const Window&) = delete;
-
-    bool ShouldClose() const;
-    void PollEvents() const;
-    void SwapBuffers() const;
-
-    GLFWwindow* GetNativeHandle() const;
+    [[nodiscard]] WindowHandle GetHandle() const;
 
 private:
-    GLFWwindow* m_Handle = nullptr;
+    WindowHandle m_Handle{};
 };
 
 } // namespace Engine

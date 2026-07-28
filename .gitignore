@@ -1,10 +1,86 @@
+<<<<<<< Updated upstream
 # Visual Studio 2015 user specific files
 .vs/
 .idea/**
+=======
+# IDE, editor, and local agent state
+/.vs/
+/.idea/
+/.cursor/
+/.vscode/
+/.agents/
+/.codex/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.VC.db
+*.VC.VC.opendb
+>>>>>>> Stashed changes
 
-# Binary Files
-Binaries/*
-Plugins/**/Binaries/*
+# CMake and build directories
+/build/
+/build-*/
+/cmake-build-*/
+/out/
+/vs_build*/
+/Binaries/
+Plugins/**/Binaries/
+CMakeFiles/
+_deps/
+Testing/
+CMakeCache.txt
+cmake_install.cmake
+install_manifest.txt
+CTestTestfile.cmake
+compile_commands.json
 
+<<<<<<< Updated upstream
 # Builds
 vs_build/*
+=======
+# Dependencies downloaded on demand by CMake FetchContent
+/Engine/External/
+
+# Applications and game projects are published separately
+/XiE_Projects/
+
+# Generated Visual Studio files and compiler/linker output
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.obj
+*.iobj
+*.ipdb
+*.idb
+*.pch
+*.pdb
+*.ilk
+*.tlog
+*.lastbuildstate
+*.recipe
+*.exp
+*.lib
+*.dll
+*.exe
+
+# Logs, temporary files, and operating-system metadata
+*.log
+*.tmp
+*.temp
+*.bak
+*.swp
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+/临时/
+
+# Documentation: keep only the maintained project documents below
+Docs/*
+!Docs/2D_MinimalLoop_Verification.md
+!Docs/2D_Engine_Implementation_Handoff.md
+!Docs/Architecture/
+!Docs/Architecture/*.md
+
+>>>>>>> Stashed changes
