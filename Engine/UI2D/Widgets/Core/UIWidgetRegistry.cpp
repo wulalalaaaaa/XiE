@@ -116,6 +116,25 @@ UIWidgetHandle UIWidgetRegistry::OwnerOf(UINodeHandle node) const {
     const auto it = m_NodeOwners.find(node);
     return it == m_NodeOwners.end() ? UIWidgetHandle{} : it->second;
 }
+UINodeHandle UIWidgetRegistry::ResolveInteractionOwner(
+    UINodeHandle hitLeaf) const {
+    UINodeHandle node = hitLeaf;
+    while (node.IsValid()) {
+        for (UIWidgetHandle widget = OwnerOf(node); widget.IsValid();) {
+            const UIWidgetRecord* record = TryGet(widget);
+            if (!record) break;
+            if (record->pointerInteractionOwner &&
+                record->lifecycle == UIWidgetLifecycleState::Mounted &&
+                !record->invalidationQueued) {
+                return record->rootNode;
+            }
+            widget = record->parentWidget;
+        }
+        const UINodeRecord* record = m_Runtime->Scene().TryGet(node);
+        node = record ? record->parent : UINodeHandle{};
+    }
+    return {};
+}
 void UIWidgetRegistry::Clear(UIWindowRuntime& runtime) {
     std::vector<UIWidgetHandle> roots;
     for (std::size_t i = 1; i < m_Slots.size(); ++i) {

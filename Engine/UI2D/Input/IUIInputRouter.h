@@ -13,6 +13,7 @@ class IUIHitTester;
 class UIEventListenerRegistry;
 class UIFocusRequestQueue;
 class UISceneMutationQueue;
+class IUIInteractionOwnerResolver;
 struct UIInteractionRuntimeState;
 
 struct UIClickPolicy {
@@ -29,6 +30,7 @@ struct UIInputDispatchContext {
     UIClickPolicy clickPolicy{};
     UIFocusRequestQueue& focusRequests;
     UIFocusPolicy focusPolicy{};
+    const IUIInteractionOwnerResolver* interactionOwners = nullptr;
 };
 
 class IUIInputRouter {

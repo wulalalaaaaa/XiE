@@ -19,10 +19,11 @@ struct PremultipliedBitmap {
 
 class Software2DRenderer {
 public:
-    explicit Software2DRenderer(const TextureRegistry2D* textures = nullptr, const ITextLayoutService* text = nullptr);
+    explicit Software2DRenderer(const TextureRegistry2D* textures = nullptr, ITextLayoutService* text = nullptr);
 
     void SetTextureRegistry(const TextureRegistry2D* textures);
-    void SetTextLayoutService(const ITextLayoutService* text);
+    void SetTextLayoutService(ITextLayoutService* text);
+    void PrepareTextForDpiScale(float dpiScale);
     void Resize(int pixelWidth, int pixelHeight);
 
     void Render(const DrawList2D& drawList, float dpiScale);
@@ -71,7 +72,7 @@ private:
 private:
     PremultipliedBitmap m_Bitmap;
     const TextureRegistry2D* m_Textures = nullptr;
-    const ITextLayoutService* m_Text = nullptr;
+    ITextLayoutService* m_Text = nullptr;
     std::vector<ClipI> m_ClipStack;
     Render2DStats m_Stats{};
 };

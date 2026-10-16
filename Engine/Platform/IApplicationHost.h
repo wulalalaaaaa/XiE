@@ -9,6 +9,7 @@ public:
     virtual void PollEvents() = 0;
     virtual void WaitForEvents() = 0;
     virtual void WaitForEventsTimeout(double seconds) = 0;
+    virtual void WakeEventLoop() = 0;
     virtual bool ShouldExit() const = 0;
     virtual void RequestExit() = 0;
 };

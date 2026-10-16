@@ -17,6 +17,17 @@ struct ApplicationWindowCallbacks {
         bool hasPendingWork = false;
     };
     std::function<Activity(const WindowContext&)> queryActivity;
+
+    // Optional composition hooks.  They keep specialized window systems
+    // behind the application runtime without changing the legacy standard
+    // window callback shape.  The hooks are deliberately expressed only in
+    // XiE types; platform handles remain in backend implementations.
+    std::function<bool(WindowContext&)> close;
+    std::function<void()> pollExternal;
+    std::function<bool()> hasExternalWindows;
+    std::function<Activity()> queryExternalActivity;
+    std::function<void(double)> updateExternal;
+    std::function<void()> renderExternal;
 };
 
 // Platform-neutral multi-window loop. Project composition supplies content callbacks.

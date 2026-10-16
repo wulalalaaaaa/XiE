@@ -5,6 +5,7 @@
 #include "UI2D/Widgets/Core/UIWidgetRegistry.h"
 #include "UI2D/Widgets/Scrolling/UIScrollViewWidget.h"
 #include "UI2D/Widgets/Scrolling/UIScrollbarWidget.h"
+#include "UI2D/Widgets/Text/UITextBoxWidget.h"
 
 namespace Engine::UI2D {
 
@@ -30,6 +31,8 @@ public:
     UIWidgetHandle CreateProgressBar(const UIProgressBarWidgetDesc& desc, UIWidgetHandle parent = {});
     UIWidgetHandle CreateScrollView(const UIScrollViewWidgetDesc& desc, UIWidgetHandle parent = {});
     UIWidgetHandle CreateScrollbar(const UIScrollbarWidgetDesc& desc, UIWidgetHandle parent = {});
+    UIWidgetHandle CreateTextBox(
+        const UITextBoxWidgetDesc& desc, UIWidgetHandle parent = {});
 
     bool Destroy(UIWidgetHandle widget);
     bool Reparent(UIWidgetHandle child, UIWidgetHandle parent);
@@ -46,6 +49,13 @@ public:
     bool SetTint(UIWidgetHandle widget, Engine::Color4f tint);
     bool SetTextLayout(UIWidgetHandle widget, Engine::TextLayoutHandle layout);
     bool SetTextColor(UIWidgetHandle widget, Engine::Color4f color);
+    bool SetText(UIWidgetHandle widget, std::string_view text);
+    [[nodiscard]] std::string GetText(UIWidgetHandle widget) const;
+    bool SetReadOnly(UIWidgetHandle widget, bool readOnly);
+    bool SelectAll(UIWidgetHandle widget);
+    bool SetCaret(UIWidgetHandle widget, std::size_t index);
+    [[nodiscard]] UITextSelection GetSelection(
+        UIWidgetHandle widget) const;
 
     UIWidgetConnectionHandle Connect(UIWidgetHandle widget, UINodeHandle node,
         UIEventType eventType, UIEventPhaseMask phases, UIEventCallback callback);
@@ -109,6 +119,7 @@ private:
     UIWidgetMutationQueue m_Mutations;
     std::vector<UIWidgetHandle> m_ScrollViews;
     std::vector<UIWidgetHandle> m_Scrollbars;
+    std::vector<UIWidgetHandle> m_TextBoxes;
 };
 
 } // namespace Engine::UI2D

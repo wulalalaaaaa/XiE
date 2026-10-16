@@ -7,6 +7,8 @@
 #include <Windows.h>
 #endif
 
+#include <algorithm>
+#include <cmath>
 #include <cstring>
 
 namespace Engine {
@@ -16,6 +18,10 @@ LayeredWindowPresenter::LayeredWindowPresenter(NativeWindowHandle hwnd)
 
 void LayeredWindowPresenter::SetWindow(NativeWindowHandle hwnd) {
     m_Window = hwnd;
+}
+
+void LayeredWindowPresenter::SetOpacity(float opacity) {
+    m_Opacity = std::clamp(opacity, 0.0f, 1.0f);
 }
 
 bool LayeredWindowPresenter::Present(const PremultipliedBitmap& bitmap) {
@@ -55,7 +61,9 @@ bool LayeredWindowPresenter::Present(const PremultipliedBitmap& bitmap) {
     GetWindowRect(hwnd, &windowRect);
     pos.x = windowRect.left;
     pos.y = windowRect.top;
-    BLENDFUNCTION blend{AC_SRC_OVER, 0, 255, AC_SRC_ALPHA};
+    const auto alpha = static_cast<BYTE>(std::lround(
+        std::clamp(m_Opacity, 0.0f, 1.0f) * 255.0f));
+    BLENDFUNCTION blend{AC_SRC_OVER, 0, alpha, AC_SRC_ALPHA};
     const BOOL ok = UpdateLayeredWindow(hwnd, screen, &pos, &size, mem, &source, 0, &blend, ULW_ALPHA);
 
     SelectObject(mem, old);

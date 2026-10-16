@@ -10,6 +10,9 @@ namespace Engine {
 
 class BasicTextLayoutService final : public ITextLayoutService {
 public:
+    void PrepareForDpiScale(float dpiScale) override;
+    void SetRasterScale(float scale);
+    [[nodiscard]] float RasterScale() const noexcept { return m_RasterScale; }
     TextLayoutHandle CreateLayout(
         FontHandle font,
         std::u32string_view text,
@@ -34,6 +37,7 @@ private:
     std::unordered_map<std::string, TextLayoutHandle> m_Cache;
     std::uint32_t m_RasterizeCount = 0;
     std::uint64_t m_Revision = 0;
+    float m_RasterScale = 1.0f;
 };
 
 } // namespace Engine

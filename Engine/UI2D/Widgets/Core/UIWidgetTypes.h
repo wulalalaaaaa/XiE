@@ -13,7 +13,10 @@
 namespace Engine::UI2D {
 
 enum class UIWidgetLifecycleState { Constructing, Mounted, Destroying, Destroyed };
-enum class UIWidgetKind { Panel, Image, Text, Button, ToggleButton, ProgressBar, ScrollView, Scrollbar };
+enum class UIWidgetKind {
+    Panel, Image, Text, Button, ToggleButton, ProgressBar,
+    ScrollView, Scrollbar, TextBox
+};
 
 struct UIWidgetCommonProperties {
     bool visible = true;

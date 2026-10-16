@@ -9,6 +9,8 @@
 #include "UI2D/Input/UIFocusTypes.h"
 
 #include <cstdint>
+#include <optional>
+#include <string>
 
 namespace Engine::UI2D {
 
@@ -19,6 +21,9 @@ struct UIEvent {
     UINodeHandle target{};
     UINodeHandle currentTarget{};
     UINodeHandle relatedTarget{};
+    // Composite control responsible for activation. target remains the exact
+    // hit-test leaf so hover, routing and local hit semantics are unchanged.
+    UINodeHandle interactionOwner{};
     UIFocusReason focusReason = UIFocusReason::Programmatic;
     Engine::PointerId pointerId = 0;
     Engine::PointerButton button = Engine::PointerButton::None;
@@ -27,6 +32,10 @@ struct UIEvent {
     Engine::Vec2F wheelDelta{};
     Engine::InputKeyCode key = Engine::InputKeyCode::Unknown;
     char32_t codepoint = U'\0';
+    std::string text;
+    std::size_t textCaret = 0;
+    std::optional<Engine::TextCompositionSelection>
+        textCompositionSelection;
     Engine::InputModifiers modifiers = Engine::InputModifiers::None;
     double timestampSeconds = 0.0;
     bool repeat = false;

@@ -1,6 +1,7 @@
 #pragma once
 
 #include "UI2D/Input/UIEventListenerRegistry.h"
+#include "UI2D/Input/IUIInteractionOwnerResolver.h"
 #include "UI2D/Widgets/Core/UIWidgetRecord.h"
 #include "UI2D/Widgets/Scrolling/UIScrollTypes.h"
 
@@ -11,7 +12,7 @@ namespace Engine::UI2D {
 
 class UIWindowRuntime;
 
-class UIWidgetRegistry {
+class UIWidgetRegistry final : public IUIInteractionOwnerResolver {
 public:
     explicit UIWidgetRegistry(UIWindowRuntime& runtime) : m_Runtime(&runtime) {}
 
@@ -37,6 +38,8 @@ public:
     void DispatchScrollCompleted(const UIScrollCompletedEvent& event);
 
     [[nodiscard]] UIWidgetHandle OwnerOf(UINodeHandle node) const;
+    [[nodiscard]] UINodeHandle ResolveInteractionOwner(
+        UINodeHandle hitLeaf) const override;
     [[nodiscard]] std::size_t Size() const noexcept { return m_LiveCount; }
     [[nodiscard]] bool Empty() const noexcept { return m_LiveCount == 0; }
 

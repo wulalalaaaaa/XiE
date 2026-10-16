@@ -5,6 +5,7 @@
 #include "Platform/WindowHandle.h"
 
 #include <cstdint>
+#include <optional>
 #include <string>
 #include <variant>
 
@@ -79,7 +80,31 @@ struct TextInputEvent {
     WindowHandle window{};
     char32_t codepoint = U'\0';
     double timestampSeconds = 0.0;
-}; // IME composition is intentionally not implemented in phase 3E.
+};
+struct TextCompositionSelection {
+    std::size_t anchor = 0;
+    std::size_t active = 0;
+};
+struct TextCompositionStartEvent {
+    WindowHandle window{};
+    double timestampSeconds = 0.0;
+};
+struct TextCompositionUpdateEvent {
+    WindowHandle window{};
+    std::string preeditUtf8;
+    std::size_t caret = 0;
+    std::optional<TextCompositionSelection> selection;
+    double timestampSeconds = 0.0;
+};
+struct TextCompositionCommitEvent {
+    WindowHandle window{};
+    std::string committedUtf8;
+    double timestampSeconds = 0.0;
+};
+struct TextCompositionEndEvent {
+    WindowHandle window{};
+    double timestampSeconds = 0.0;
+};
 struct WindowFocusEvent {
     WindowHandle window{};
     bool focused = false;
@@ -94,6 +119,10 @@ using InputEvent = std::variant<
     PointerCancelEvent,
     KeyEvent,
     TextInputEvent,
+    TextCompositionStartEvent,
+    TextCompositionUpdateEvent,
+    TextCompositionCommitEvent,
+    TextCompositionEndEvent,
     WindowFocusEvent>;
 
 [[nodiscard]] WindowHandle GetInputEventWindow(const InputEvent& event);

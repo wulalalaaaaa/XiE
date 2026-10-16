@@ -51,8 +51,36 @@ Implemented:
 
 See [UI2DScrollSystem.md](UI2DScrollSystem.md) and [UI2DScrollViewWidget.md](UI2DScrollViewWidget.md).
 
-## Candidate next phase
+## Phase 3K: Fixed-cell Virtualized Grid (complete)
 
-Phase 3K: Text Editing, TextBox, Clipboard Abstraction, and IME. This is recorded only as a candidate; no implementation or project migration starts automatically.
+Implemented:
 
-Later work retains the architecture boundary: UI2D does not read platform messages, execute a renderer backend, or access business data. JSON theme loading, file hot reload, text input/IME, list virtualization, popup systems, shader style effects, blur, glow, and application-domain styling remain explicitly deferred.
+- O(1) logical visible/overscan range calculation with explicit empty ranges;
+- auto/min/max column calculation, fixed-cell positioning and virtual content extent;
+- ScrollView snapshot/event integration without a second scroll runtime;
+- active-slot reuse pool with generic create/bind/unbind callbacks;
+- focus clearing before a focused slot is recycled;
+- resize, 1.5-DPI logical layout, Hidden suppression and Static-clean behavior;
+- 50k/100k automated/performance coverage with fewer than 100 realized slots.
+
+See [UI2DVirtualizedGrid.md](UI2DVirtualizedGrid.md).
+
+## Phase 3L: Text editing, TextBox, clipboard and IME (complete)
+
+Implemented:
+
+- validated UTF-8 scalar-indexed editing, selection and bounded undo/redo;
+- measured text-layout caret stops and pointer hit maps;
+- generic single-line TextBox with clipboard, focus, pointer selection,
+  horizontal offset, placeholder, composition and lifecycle cleanup;
+- generic text clipboard and input-method contracts plus Windows
+  `CF_UNICODETEXT` and IMM adapters;
+- chained GLFW/OpenGL and Win32 layered composition input;
+- automated model, Widget, composition, lifecycle and performance coverage.
+
+See [UI2DTextEditing.md](UI2DTextEditing.md),
+[UI2DTextBox.md](UI2DTextBox.md) and [UI2DIME.md](UI2DIME.md).
+
+Later work retains the architecture boundary: UI2D does not access business
+data or project storage. Full grapheme segmentation, multiline/rich text,
+autocomplete/popups and low-frequency timer wakes remain deferred.

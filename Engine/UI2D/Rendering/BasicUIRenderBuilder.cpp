@@ -317,15 +317,20 @@ bool BasicUIRenderBuilder::EmitText(
         ++result.missingTextLayoutCount; return false;
     }
     const Engine::RectF bounds = LocalRect(node);
+    const float rasterScale = std::max(0.01f, bitmap->rasterScale);
+    const float logicalBitmapWidth =
+        static_cast<float>(bitmap->width) / rasterScale;
+    const float logicalBitmapHeight =
+        static_cast<float>(bitmap->height) / rasterScale;
     Engine::Vec2F position{};
     if (visual.horizontalAlignment == UITextHorizontalAlignment::Center)
-        position.x = (bounds.width - static_cast<float>(bitmap->width)) * 0.5f;
+        position.x = (bounds.width - logicalBitmapWidth) * 0.5f;
     else if (visual.horizontalAlignment == UITextHorizontalAlignment::End)
-        position.x = bounds.width - static_cast<float>(bitmap->width);
+        position.x = bounds.width - logicalBitmapWidth;
     if (visual.verticalAlignment == UITextVerticalAlignment::Center)
-        position.y = (bounds.height - static_cast<float>(bitmap->height)) * 0.5f;
+        position.y = (bounds.height - logicalBitmapHeight) * 0.5f;
     else if (visual.verticalAlignment == UITextVerticalAlignment::End)
-        position.y = bounds.height - static_cast<float>(bitmap->height);
+        position.y = bounds.height - logicalBitmapHeight;
     Engine::TextCommand command;
     command.position = position; command.layout = visual.layout;
     command.color = ResolveColor(visual.color, node.layoutState.effectiveOpacity, Engine::AlphaMode::Premultiplied,

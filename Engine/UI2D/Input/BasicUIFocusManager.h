@@ -13,7 +13,7 @@ struct UIFocusState {
     UINodeHandle restoreCandidate{};
     UINodeHandle focusRoot{};
     std::vector<UINodeHandle> focusRoute;
-    bool windowFocused = true;
+    bool windowFocused = false;
 };
 
 class BasicUIFocusManager final : public IUIFocusManager {

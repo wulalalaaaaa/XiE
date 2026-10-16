@@ -22,8 +22,11 @@ struct WindowContext {
 
     float dpiScale = 1.0f;
     bool visible = false;
+    bool minimized = false;
+    bool focused = true;
     bool dirty = true;
     bool closeRequested = false;
+    RenderSurfaceSize framebufferSize{};
 
     FramePolicy framePolicy = FramePolicy::Active;
 };

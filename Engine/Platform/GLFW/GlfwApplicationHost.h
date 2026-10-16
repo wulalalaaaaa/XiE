@@ -17,6 +17,7 @@ public:
     void PollEvents() override;
     void WaitForEvents() override;
     void WaitForEventsTimeout(double seconds) override;
+    void WakeEventLoop() override;
     bool ShouldExit() const override;
     void RequestExit() override;
 

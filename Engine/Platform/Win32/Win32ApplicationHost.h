@@ -11,11 +11,13 @@ public:
     void PollEvents() override;
     void WaitForEvents() override;
     void WaitForEventsTimeout(double seconds) override;
+    void WakeEventLoop() override;
     bool ShouldExit() const override;
     void RequestExit() override;
 
 private:
     bool m_ShouldExit = false;
+    unsigned long m_ThreadId = 0;
 };
 
 } // namespace Engine

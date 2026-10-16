@@ -1,6 +1,7 @@
 #include "UI2D/Widgets/Runtime/UIWidgetRuntime.h"
 
 #include "UI2D/Runtime/UIWindowRuntime.h"
+#include "Platform/TextInput/ITextInputMethod.h"
 
 #include <limits>
 
@@ -28,6 +29,7 @@ void UIWidgetRuntime::Clear(UIWindowRuntime& runtime) {
     m_Registry.Clear(runtime);
     m_ScrollViews.clear();
     m_Scrollbars.clear();
+    m_TextBoxes.clear();
 }
 
 UINodeHandle UIWidgetRuntime::ParentNode(UIWidgetHandle parent) const {
@@ -54,6 +56,23 @@ UIWidgetHandle UIWidgetRuntime::RegisterOrRollback(UIWidgetRecord record) {
 bool UIWidgetRuntime::Destroy(UIWidgetHandle widget) {
     UIWidgetRecord* record = m_Registry.TryGet(widget);
     if (!record || record->invalidationQueued) return false;
+    if (record->textBox) {
+        record->textBox->composition = {};
+        record->textBox->selecting = false;
+        if (record->textBox->caretBlink.IsValid()) {
+            (void)m_Runtime->CancelAnimation(
+                record->textBox->caretBlink,
+                UIAnimationCancelMode::RestoreBase);
+            record->textBox->caretBlink = {};
+        }
+        if (m_Runtime->IsFocused(record->rootNode)) {
+            if (auto* inputMethod =
+                m_Runtime->Services().textInputMethod) {
+                inputMethod->Deactivate(m_Runtime->Window());
+            }
+        }
+        std::erase(m_TextBoxes, widget);
+    }
     if (record->scrollbar) {
         if (UIWidgetRecord* view = m_Registry.TryGet(record->scrollbar->boundScrollView)) {
             if (view->scrollView) {

@@ -65,6 +65,15 @@ public:
     [[nodiscard]] UINodeHandle FocusRoot() const { return m_FocusManager.GetFocusRoot(); }
     UIFocusPolicy& FocusPolicy() noexcept { return m_FocusPolicy; }
     const UIFocusPolicy& FocusPolicy() const noexcept { return m_FocusPolicy; }
+    [[nodiscard]] Engine::WindowHandle Window() const noexcept {
+        return m_Window;
+    }
+    [[nodiscard]] const UI2DServices& Services() const noexcept {
+        return m_Services;
+    }
+    [[nodiscard]] float LastDpiScale() const noexcept {
+        return m_LastDpiScale > 0.0f ? m_LastDpiScale : 1.0f;
+    }
 
     UIAnimationStartResult StartAnimation(const UIAnimationDesc& desc) {
         return m_Animator.Start(m_Scene, desc);

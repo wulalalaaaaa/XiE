@@ -20,6 +20,8 @@ struct UIPressKey {
 
 struct UIPressRecord {
     UINodeHandle pressedNode{};
+    UINodeHandle interactionOwner{};
+    bool hasInteractionOwner = false;
     Engine::Vec2F downScenePosition{};
     double downTimestampSeconds = 0.0;
     bool canceled = false;
@@ -27,7 +29,10 @@ struct UIPressRecord {
 
 class UIPressTracker {
 public:
-    bool BeginPress(UIPressKey key, UINodeHandle node, Engine::Vec2F position, double timestamp);
+    bool BeginPress(UIPressKey key, UINodeHandle node,
+        UINodeHandle interactionOwner, bool hasInteractionOwner,
+        Engine::Vec2F position,
+        double timestamp);
     [[nodiscard]] const UIPressRecord* TryGet(UIPressKey key) const;
     [[nodiscard]] UIPressRecord* TryGet(UIPressKey key);
     bool Cancel(UIPressKey key);

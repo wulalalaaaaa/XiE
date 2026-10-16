@@ -1,5 +1,7 @@
 #include "UI2D/Input/BasicUIFocusManager.h"
 
+#include "Input/InputDiagnostics.h"
+
 #include "UI2D/Core/UIScene.h"
 #include "Foundation/Math/Matrix3.h"
 #include "UI2D/Input/UIEventContext.h"
@@ -149,6 +151,9 @@ UIFocusRequestResult BasicUIFocusManager::ApplyFocus(
     const std::vector<UINodeHandle> oldRoute = m_State.focusRoute;
     m_State.focusedNode = target;
     m_State.focusRoute = newRoute;
+    Engine::EmitInputDiagnostic({Engine::InputDiagnosticStage::Focus,
+        Engine::InputDiagnosticKind::FocusTargetChanged, context.window,
+        old.index, target.index});
     if (old.IsValid() && scene.TryGet(old)) {
         DispatchFocusEvent(scene, UIEventType::FocusLost, old, target, reason, oldRoute, context);
         ++m_Stats.focusLostEvents;
@@ -189,6 +194,9 @@ UIFocusRequestResult BasicUIFocusManager::ClearFocus(
     }
     m_State.focusedNode = {};
     m_State.focusRoute.clear();
+    Engine::EmitInputDiagnostic({Engine::InputDiagnosticStage::Focus,
+        Engine::InputDiagnosticKind::FocusTargetChanged, context.window,
+        old.index, 0});
     if (scene.TryGet(old)) {
         DispatchFocusEvent(scene, UIEventType::FocusLost, old, {}, reason, oldRoute, context);
         ++m_Stats.focusLostEvents;
@@ -291,6 +299,11 @@ void BasicUIFocusManager::OnWindowFocusChanged(
     UIScene& scene, bool focused, UIFocusDispatchContext& context) {
     EnsureFocusRoot(scene);
     if (m_State.windowFocused == focused) return;
+    Engine::EmitInputDiagnostic({Engine::InputDiagnosticStage::Focus,
+        focused ? Engine::InputDiagnosticKind::FocusGained
+                : Engine::InputDiagnosticKind::FocusLost,
+        context.window, m_State.focusedNode.index,
+        m_State.focusedNode.generation});
     scene.MarkAllStyleDirty();
     if (!focused) {
         AppendDebug("[Focus] window deactivated");
@@ -306,6 +319,9 @@ void BasicUIFocusManager::OnWindowFocusChanged(
         }
         m_State.focusedNode = {};
         m_State.focusRoute.clear();
+        Engine::EmitInputDiagnostic({Engine::InputDiagnosticStage::Focus,
+            Engine::InputDiagnosticKind::FocusTargetChanged, context.window,
+            old.index, 0});
         m_State.windowFocused = false;
         MarkRouteChange(scene, oldRoute, {});
         if (ownDispatch) context.listeners.EndDispatch();

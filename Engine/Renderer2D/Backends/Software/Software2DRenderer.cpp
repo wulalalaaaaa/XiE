@@ -48,7 +48,7 @@ RectF TransformBounds(const Mat3F& transform, RectF rect) {
 
 } // namespace
 
-Software2DRenderer::Software2DRenderer(const TextureRegistry2D* textures, const ITextLayoutService* text)
+Software2DRenderer::Software2DRenderer(const TextureRegistry2D* textures, ITextLayoutService* text)
     : m_Textures(textures)
     , m_Text(text) {}
 
@@ -56,8 +56,12 @@ void Software2DRenderer::SetTextureRegistry(const TextureRegistry2D* textures) {
     m_Textures = textures;
 }
 
-void Software2DRenderer::SetTextLayoutService(const ITextLayoutService* text) {
+void Software2DRenderer::SetTextLayoutService(ITextLayoutService* text) {
     m_Text = text;
+}
+
+void Software2DRenderer::PrepareTextForDpiScale(float dpiScale) {
+    if (m_Text != nullptr) m_Text->PrepareForDpiScale(dpiScale);
 }
 
 void Software2DRenderer::Resize(int pixelWidth, int pixelHeight) {
@@ -278,12 +282,27 @@ void Software2DRenderer::DrawText(const TextCommand& command, float dpiScale) {
     }
 
     const PixelPremul tint = ToPremul(command.color, command.alphaMode);
-    const RectF bounds{command.position.x,command.position.y,static_cast<float>(bitmap->width),static_cast<float>(bitmap->height)};
+    const float rasterScale = std::max(0.01f, bitmap->rasterScale);
+    const RectF bounds{command.position.x,command.position.y,
+        static_cast<float>(bitmap->width) / rasterScale,
+        static_cast<float>(bitmap->height) / rasterScale};
     RasterTransformed(bounds, command.transform, dpiScale, [&](int x,int y,Vec2F local){
-        const int sx=std::clamp(static_cast<int>(local.x-command.position.x),0,bitmap->width-1);
-        const int sy=std::clamp(static_cast<int>(local.y-command.position.y),0,bitmap->height-1);
-        const std::size_t src=static_cast<std::size_t>((sy*bitmap->width+sx)*4);
-        const float a=static_cast<float>(bitmap->bgraPremultiplied[src+3])/255.0f;
+        const float sourceX = (local.x - command.position.x) * rasterScale;
+        const float sourceY = (local.y - command.position.y) * rasterScale;
+        const int x0 = std::clamp(static_cast<int>(std::floor(sourceX)), 0, bitmap->width - 1);
+        const int y0 = std::clamp(static_cast<int>(std::floor(sourceY)), 0, bitmap->height - 1);
+        const int x1 = std::min(x0 + 1, bitmap->width - 1);
+        const int y1 = std::min(y0 + 1, bitmap->height - 1);
+        const float tx = std::clamp(sourceX - std::floor(sourceX), 0.0f, 1.0f);
+        const float ty = std::clamp(sourceY - std::floor(sourceY), 0.0f, 1.0f);
+        const auto alphaAt = [&](int sampleX, int sampleY) {
+            const std::size_t source = static_cast<std::size_t>(
+                (sampleY * bitmap->width + sampleX) * 4);
+            return static_cast<float>(bitmap->bgraPremultiplied[source + 3]) / 255.0f;
+        };
+        const float top = std::lerp(alphaAt(x0, y0), alphaAt(x1, y0), tx);
+        const float bottom = std::lerp(alphaAt(x0, y1), alphaAt(x1, y1), tx);
+        const float a = std::lerp(top, bottom, ty);
         BlendPixel(x,y,{tint.b*a,tint.g*a,tint.r*a,tint.a*a},command.blendMode);
     });
     ++m_Stats.drawCallCount;

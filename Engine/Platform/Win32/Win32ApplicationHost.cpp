@@ -8,6 +8,9 @@
 namespace Engine {
 
 Win32ApplicationHost::Win32ApplicationHost() {
+    m_ThreadId = GetCurrentThreadId();
+    MSG message{};
+    (void)PeekMessageW(&message, nullptr, 0, 0, PM_NOREMOVE);
     HMODULE user32 = GetModuleHandleW(L"user32.dll");
     using SetDpiAwarenessContextProc = BOOL(WINAPI*)(DPI_AWARENESS_CONTEXT);
     auto setDpiAwarenessContext = reinterpret_cast<SetDpiAwarenessContextProc>(
@@ -47,6 +50,12 @@ void Win32ApplicationHost::WaitForEventsTimeout(double seconds) {
     PollEvents();
 }
 
+void Win32ApplicationHost::WakeEventLoop() {
+    if (m_ThreadId != 0) {
+        (void)PostThreadMessageW(static_cast<DWORD>(m_ThreadId), WM_APP + 1, 0, 0);
+    }
+}
+
 bool Win32ApplicationHost::ShouldExit() const {
     return m_ShouldExit;
 }
@@ -54,6 +63,7 @@ bool Win32ApplicationHost::ShouldExit() const {
 void Win32ApplicationHost::RequestExit() {
     m_ShouldExit = true;
     PostQuitMessage(0);
+    WakeEventLoop();
 }
 
 } // namespace Engine

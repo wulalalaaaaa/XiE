@@ -53,11 +53,22 @@ void ApplyScissor(IRenderBackend& backend, RectF clip, float dpi) {
 
 } // namespace
 
-void OpenGL2DRenderer::SetTextLayoutService(const ITextLayoutService* text) {
+void OpenGL2DRenderer::SetTextLayoutService(ITextLayoutService* text) {
     if (m_Text != text) {
         m_Text = text;
         m_TextTexturePixels.clear();
         m_TextTextureUploadCount = 0;
+        m_TextRevision = text != nullptr ? text->Revision() : 0;
+    }
+}
+
+void OpenGL2DRenderer::PrepareTextForDpiScale(float dpiScale) {
+    if (m_Text == nullptr) return;
+    m_Text->PrepareForDpiScale(dpiScale);
+    const std::uint64_t revision = m_Text->Revision();
+    if (revision != m_TextRevision) {
+        m_TextTexturePixels.clear();
+        m_TextRevision = revision;
     }
 }
 
@@ -370,10 +381,12 @@ void OpenGL2DRenderer::RenderText(IRenderBackend& backend, const TextCommand& co
     backend.BindTextureRGBA8(key, it->second.data(), bitmap->width, bitmap->height);
     backend.SetBlendMode(command.blendMode, AlphaMode::Premultiplied);
     backend.SetMaterialTint(&command.color.r);
+    const float rasterScale = std::max(0.01f, bitmap->rasterScale);
     UploadQuad(
         backend,
         {command.position.x, command.position.y,
-         static_cast<float>(bitmap->width), static_cast<float>(bitmap->height)},
+         static_cast<float>(bitmap->width) / rasterScale,
+         static_cast<float>(bitmap->height) / rasterScale},
         {0.0f, 0.0f, 1.0f, 1.0f},
         command.transform);
     backend.DrawMesh();

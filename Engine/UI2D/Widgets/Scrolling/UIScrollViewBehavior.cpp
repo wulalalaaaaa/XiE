@@ -1,5 +1,6 @@
 #include "UI2D/Widgets/Runtime/UIWidgetRuntime.h"
 
+#include "Platform/TextInput/ITextInputMethod.h"
 #include "UI2D/Animation/UIAnimatedProperties.h"
 #include "UI2D/Input/UIEventContext.h"
 #include "UI2D/Layout/UIContentExtent.h"
@@ -518,6 +519,18 @@ void UIWidgetRuntime::OnWindowHidden() {
     for (UIWidgetHandle handle : m_Scrollbars) {
         UIWidgetRecord* record = m_Registry.TryGet(handle);
         if (record && record->scrollbar) record->scrollbar->dragging = false;
+    }
+    for (UIWidgetHandle handle : m_TextBoxes) {
+        UIWidgetRecord* record = m_Registry.TryGet(handle);
+        if (!record || !record->textBox) continue;
+        record->textBox->composition = {};
+        record->textBox->selecting = false;
+        if (record->textBox->caretBlink.IsValid()) {
+            (void)m_Runtime->CancelAnimation(
+                record->textBox->caretBlink,
+                UIAnimationCancelMode::RestoreBase);
+            record->textBox->caretBlink = {};
+        }
     }
 }
 

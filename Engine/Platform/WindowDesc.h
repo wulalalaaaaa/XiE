@@ -15,6 +15,9 @@ struct WindowDesc {
     bool transparent = false;
     bool alwaysOnTop = false;
     bool toolWindow = false;
+    bool noActivate = false;
+    bool clickThrough = false;
+    float opacity = 1.0f;
 };
 
 } // namespace Engine

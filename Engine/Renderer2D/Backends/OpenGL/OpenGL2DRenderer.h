@@ -15,7 +15,8 @@ class IRenderSurface;
 
 class OpenGL2DRenderer {
 public:
-    void SetTextLayoutService(const ITextLayoutService* text);
+    void SetTextLayoutService(ITextLayoutService* text);
+    void PrepareTextForDpiScale(float dpiScale);
     void SetTextureRegistry(const TextureRegistry2D* textures);
     void Render(IRenderSurface& surface, IRenderBackend& backend, const DrawList2D& drawList, const Render2DView& view);
 
@@ -35,10 +36,11 @@ private:
 
 private:
     Render2DStats m_Stats{};
-    const ITextLayoutService* m_Text = nullptr;
+    ITextLayoutService* m_Text = nullptr;
     const TextureRegistry2D* m_Textures = nullptr;
     std::unordered_map<std::uint64_t, std::vector<std::uint8_t>> m_TextTexturePixels;
     std::uint32_t m_TextTextureUploadCount = 0;
+    std::uint64_t m_TextRevision = 0;
 };
 
 } // namespace Engine

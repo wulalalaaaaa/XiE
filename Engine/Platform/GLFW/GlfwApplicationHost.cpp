@@ -37,15 +37,19 @@ void GlfwApplicationHost::WaitForEventsTimeout(double seconds) {
     }
 }
 
+void GlfwApplicationHost::WakeEventLoop() {
+    if (m_Initialized) {
+        glfwPostEmptyEvent();
+    }
+}
+
 bool GlfwApplicationHost::ShouldExit() const {
     return m_ShouldExit;
 }
 
 void GlfwApplicationHost::RequestExit() {
     m_ShouldExit = true;
-    if (m_Initialized) {
-        glfwPostEmptyEvent();
-    }
+    WakeEventLoop();
 }
 
 } // namespace Engine

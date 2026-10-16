@@ -37,8 +37,9 @@ bool UIEventContext::CancelClick(Engine::PointerId pointerId, Engine::PointerBut
     if (!m_PressTracker) return false;
     UIPressRecord* record = m_PressTracker->TryGet({pointerId, button});
     if (!record || !m_PressTracker->Cancel({pointerId, button})) return false;
-    m_Scene.MarkStyleDirty(record->pressedNode);
-    m_Scene.MarkDirty(record->pressedNode, UIDirtyFlags::Visual | UIDirtyFlags::HitTest);
+    m_Scene.MarkStyleDirty(record->interactionOwner);
+    m_Scene.MarkDirty(record->interactionOwner,
+        UIDirtyFlags::Visual | UIDirtyFlags::HitTest);
     m_Requests.interactionStateChanged = true;
     return true;
 }

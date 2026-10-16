@@ -1,9 +1,11 @@
 #include "UI2D/Input/BasicUIInputRouter.h"
 
 #include "Foundation/Math/Matrix3.h"
+#include "Input/InputDiagnostics.h"
 #include "UI2D/Core/UIScene.h"
 #include "UI2D/Input/IUIFocusManager.h"
 #include "UI2D/Input/IUIHitTester.h"
+#include "UI2D/Input/IUIInteractionOwnerResolver.h"
 #include "UI2D/Input/UIEventListenerRegistry.h"
 #include "UI2D/Input/UIFocusRequestQueue.h"
 #include "UI2D/Input/UIFocusUtils.h"
@@ -36,6 +38,56 @@ float DistanceSquared(Engine::Vec2F lhs, Engine::Vec2F rhs) {
     return x * x + y * y;
 }
 
+struct ResolvedInteractionOwner {
+    UINodeHandle node{};
+    bool declared = false;
+};
+
+ResolvedInteractionOwner ResolveInteractionOwner(
+    const UIInputDispatchContext& context, UINodeHandle hitLeaf) {
+    if (!hitLeaf.IsValid() || !context.interactionOwners)
+        return {hitLeaf, false};
+    const UINodeHandle owner =
+        context.interactionOwners->ResolveInteractionOwner(hitLeaf);
+    return owner.IsValid()
+        ? ResolvedInteractionOwner{owner, true}
+        : ResolvedInteractionOwner{hitLeaf, false};
+}
+
+Engine::InputDiagnosticKind DiagnosticKind(
+    const Engine::InputEvent& event) {
+    return std::visit([](const auto& value) {
+        using T = std::decay_t<decltype(value)>;
+        if constexpr (std::is_same_v<T, Engine::PointerMoveEvent>)
+            return Engine::InputDiagnosticKind::PointerMove;
+        else if constexpr (std::is_same_v<T, Engine::PointerWheelEvent>)
+            return Engine::InputDiagnosticKind::PointerWheel;
+        else if constexpr (std::is_same_v<T, Engine::PointerLeaveEvent>)
+            return Engine::InputDiagnosticKind::PointerLeave;
+        else if constexpr (std::is_same_v<T, Engine::PointerButtonEvent>)
+            return value.pressed ? Engine::InputDiagnosticKind::PointerDown
+                                 : Engine::InputDiagnosticKind::PointerUp;
+        else if constexpr (std::is_same_v<T, Engine::PointerCancelEvent>)
+            return Engine::InputDiagnosticKind::PointerCancel;
+        else if constexpr (std::is_same_v<T, Engine::KeyEvent>)
+            return value.pressed ? Engine::InputDiagnosticKind::KeyDown
+                                 : Engine::InputDiagnosticKind::KeyUp;
+        else if constexpr (std::is_same_v<T, Engine::TextInputEvent>)
+            return Engine::InputDiagnosticKind::TextInput;
+        else if constexpr (std::is_same_v<T, Engine::TextCompositionStartEvent>)
+            return Engine::InputDiagnosticKind::CompositionStart;
+        else if constexpr (std::is_same_v<T, Engine::TextCompositionUpdateEvent>)
+            return Engine::InputDiagnosticKind::CompositionUpdate;
+        else if constexpr (std::is_same_v<T, Engine::TextCompositionCommitEvent>)
+            return Engine::InputDiagnosticKind::CompositionCommit;
+        else if constexpr (std::is_same_v<T, Engine::TextCompositionEndEvent>)
+            return Engine::InputDiagnosticKind::CompositionEnd;
+        else
+            return value.focused ? Engine::InputDiagnosticKind::FocusGained
+                                 : Engine::InputDiagnosticKind::FocusLost;
+    }, event);
+}
+
 } // namespace
 
 UIHitTestResult BasicUIInputRouter::HitTest(
@@ -45,7 +97,11 @@ UIHitTestResult BasicUIInputRouter::HitTest(
     UIInputDispatchResult& result) {
     ++result.hitTestCount;
     ++m_LastStats.hitTests;
-    return context.hitTester.HitTest(scene, {}, position);
+    UIHitTestResult hit = context.hitTester.HitTest(scene, {}, position);
+    Engine::EmitInputDiagnostic({Engine::InputDiagnosticStage::Router,
+        Engine::InputDiagnosticKind::HitTest, context.window,
+        hit.target.index, hit.target.generation});
+    return hit;
 }
 
 bool BasicUIInputRouter::BuildRoute(
@@ -264,7 +320,7 @@ void BasicUIInputRouter::HandleFocusLost(
         for (Engine::PointerButton button : kPointerButtons) {
             if (UIPressRecord* press = context.interaction.press.TryGet({pointerId, button})) {
                 if (!press->canceled) ++m_LastStats.pressesCanceled;
-                MarkVisual(scene, press->pressedNode, result);
+                MarkVisual(scene, press->interactionOwner, result);
             }
         }
         context.interaction.press.CancelPointer(pointerId);
@@ -292,6 +348,8 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
     m_LastDebugLog.clear();
     for (const Engine::InputEvent& input : events) {
         if (Engine::GetInputEventWindow(input) != context.window) continue;
+        Engine::EmitInputDiagnostic({Engine::InputDiagnosticStage::Router,
+            DiagnosticKind(input), context.window});
         context.listeners.BeginDispatch();
         const std::uint64_t visualBeforeFocus = scene.VisualRevision();
         UIFocusDispatchContext focusContext{
@@ -316,7 +374,16 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                 else if constexpr (std::is_same_v<T, Engine::KeyEvent>) return value.pressed
                     ? std::string{"[Input] KeyDown"} : std::string{"[Input] KeyUp"};
                 else if constexpr (std::is_same_v<T, Engine::TextInputEvent>) return std::string{"[Input] TextInput"};
-                else return value.focused ? std::string{"[Input] WindowFocusGained"}
+                else if constexpr (std::is_same_v<T, Engine::TextCompositionStartEvent>)
+                    return std::string{"[Input] TextCompositionStart"};
+                else if constexpr (std::is_same_v<T, Engine::TextCompositionUpdateEvent>)
+                    return std::string{"[Input] TextCompositionUpdate"};
+                else if constexpr (std::is_same_v<T, Engine::TextCompositionCommitEvent>)
+                    return std::string{"[Input] TextCompositionCommit"};
+                else if constexpr (std::is_same_v<T, Engine::TextCompositionEndEvent>)
+                    return std::string{"[Input] TextCompositionEnd"};
+                else return value.focused
+                    ? std::string{"[Input] WindowFocusGained"}
                     : std::string{"[Input] WindowFocusLost"};
             }, input));
         }
@@ -340,9 +407,10 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                 for (Engine::PointerButton button : kPointerButtons) {
                     UIPressRecord* press = context.interaction.press.TryGet({value.pointerId, button});
                     if (press && !press->canceled &&
+                        !press->hasInteractionOwner &&
                         DistanceSquared(value.logicalPosition, press->downScenePosition) > threshold * threshold) {
                         press->canceled = true;
-                        MarkVisual(scene, press->pressedNode, result);
+                        MarkVisual(scene, press->interactionOwner, result);
                         ++m_LastStats.pressesCanceled;
                     }
                 }
@@ -361,10 +429,14 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                 if (BuildRoute(scene, target, route)) routed = RouteEvent(scene, event, route, context, result);
                 if (value.pressed) {
                     if (!routed.event.defaultPrevented && target.IsValid()) {
+                        const ResolvedInteractionOwner interactionOwner =
+                            ResolveInteractionOwner(context, physical.target);
                         if (context.interaction.press.BeginPress(
                                 {value.pointerId, value.button}, target,
+                                interactionOwner.node,
+                                interactionOwner.declared,
                                 value.logicalPosition, value.timestampSeconds)) {
-                            MarkVisual(scene, target, result);
+                            MarkVisual(scene, interactionOwner.node, result);
                             ++m_LastStats.pressesStarted;
                         }
                         if (value.button == Engine::PointerButton::Primary &&
@@ -399,20 +471,28 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                     const UIPressRecord* record = context.interaction.press.TryGet(key);
                     const UIPressRecord press = record ? *record : UIPressRecord{};
                     const float threshold = std::max(0.0f, context.clickPolicy.movementThreshold);
+                    const ResolvedInteractionOwner releaseOwner =
+                        ResolveInteractionOwner(context, physical.target);
                     const bool click = record && !record->canceled && !routed.event.defaultPrevented &&
-                        Eligible(scene, record->pressedNode) && physical.target == record->pressedNode &&
-                        DistanceSquared(value.logicalPosition, record->downScenePosition) <= threshold * threshold;
+                        Eligible(scene, record->pressedNode) &&
+                        Eligible(scene, record->interactionOwner) &&
+                        releaseOwner.node == record->interactionOwner &&
+                        releaseOwner.declared == record->hasInteractionOwner &&
+                        (record->hasInteractionOwner ||
+                         DistanceSquared(value.logicalPosition,
+                             record->downScenePosition) <= threshold * threshold);
                     if (click) {
                         std::vector<UINodeHandle> clickRoute;
-                        if (BuildRoute(scene, press.pressedNode, clickRoute)) {
+                        if (BuildRoute(scene, physical.target, clickRoute)) {
                             UIEvent clickEvent = event;
                             clickEvent.type = UIEventType::Click;
+                            clickEvent.interactionOwner = press.interactionOwner;
                             (void)RouteEvent(scene, clickEvent, clickRoute, context, result);
                             ++result.clickCount;
                             ++m_LastStats.clicksGenerated;
                         }
                     }
-                    if (record) MarkVisual(scene, press.pressedNode, result);
+                    if (record) MarkVisual(scene, press.interactionOwner, result);
                     (void)context.interaction.press.EndPress(key);
                     if (context.interaction.capture.Release(value.pointerId)) {
                         ++m_LastStats.capturesReleased;
@@ -449,7 +529,7 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                 }
                 for (Engine::PointerButton button : kPointerButtons) {
                     if (UIPressRecord* press = context.interaction.press.TryGet({value.pointerId, button})) {
-                        MarkVisual(scene, press->pressedNode, result);
+                        MarkVisual(scene, press->interactionOwner, result);
                         (void)context.interaction.press.EndPress({value.pointerId, button});
                         ++m_LastStats.pressesCanceled;
                     }
@@ -457,7 +537,14 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                 if (context.interaction.capture.Release(value.pointerId)) ++m_LastStats.capturesReleased;
                 result.interactionStateChanged = true;
             } else if constexpr (std::is_same_v<T, Engine::KeyEvent>) {
-                if (!context.focusManager.IsWindowFocused()) return;
+                if (!context.focusManager.IsWindowFocused()) {
+                    Engine::EmitInputDiagnostic({
+                        Engine::InputDiagnosticStage::Router,
+                        Engine::InputDiagnosticKind::DroppedWhileUnfocused,
+                        context.window,
+                        static_cast<std::uint64_t>(value.key), 0});
+                    return;
+                }
                 std::vector<UINodeHandle> route;
                 if (BuildRoute(scene, ResolveKeyboardTarget(scene, context.focusManager), route)) {
                     UIEvent event;
@@ -476,12 +563,55 @@ UIInputDispatchResult BasicUIInputRouter::Dispatch(
                     }
                 }
             } else if constexpr (std::is_same_v<T, Engine::TextInputEvent>) {
-                if (!context.focusManager.IsWindowFocused()) return;
+                if (!context.focusManager.IsWindowFocused()) {
+                    Engine::EmitInputDiagnostic({
+                        Engine::InputDiagnosticStage::Router,
+                        Engine::InputDiagnosticKind::DroppedWhileUnfocused,
+                        context.window, value.codepoint, 0});
+                    return;
+                }
                 std::vector<UINodeHandle> route;
                 if (BuildRoute(scene, ResolveKeyboardTarget(scene, context.focusManager), route)) {
                     UIEvent event;
                     event.type = UIEventType::TextInput; event.window = value.window;
                     event.codepoint = value.codepoint; event.timestampSeconds = value.timestampSeconds;
+                    (void)RouteEvent(scene, event, route, context, result);
+                }
+            } else if constexpr (
+                std::is_same_v<T, Engine::TextCompositionStartEvent> ||
+                std::is_same_v<T, Engine::TextCompositionUpdateEvent> ||
+                std::is_same_v<T, Engine::TextCompositionCommitEvent> ||
+                std::is_same_v<T, Engine::TextCompositionEndEvent>) {
+                if (!context.focusManager.IsWindowFocused()) {
+                    Engine::EmitInputDiagnostic({
+                        Engine::InputDiagnosticStage::Router,
+                        Engine::InputDiagnosticKind::DroppedWhileUnfocused,
+                        context.window, 0, 0});
+                    return;
+                }
+                std::vector<UINodeHandle> route;
+                if (BuildRoute(scene,
+                    ResolveKeyboardTarget(scene, context.focusManager),
+                    route)) {
+                    UIEvent event;
+                    event.window = value.window;
+                    event.timestampSeconds = value.timestampSeconds;
+                    if constexpr (std::is_same_v<
+                        T, Engine::TextCompositionStartEvent>) {
+                        event.type = UIEventType::TextCompositionStart;
+                    } else if constexpr (std::is_same_v<
+                        T, Engine::TextCompositionUpdateEvent>) {
+                        event.type = UIEventType::TextCompositionUpdate;
+                        event.text = value.preeditUtf8;
+                        event.textCaret = value.caret;
+                        event.textCompositionSelection = value.selection;
+                    } else if constexpr (std::is_same_v<
+                        T, Engine::TextCompositionCommitEvent>) {
+                        event.type = UIEventType::TextCompositionCommit;
+                        event.text = value.committedUtf8;
+                    } else {
+                        event.type = UIEventType::TextCompositionEnd;
+                    }
                     (void)RouteEvent(scene, event, route, context, result);
                 }
             } else if constexpr (std::is_same_v<T, Engine::WindowFocusEvent>) {

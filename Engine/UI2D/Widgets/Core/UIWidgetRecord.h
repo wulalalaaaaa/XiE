@@ -4,6 +4,7 @@
 #include "UI2D/Widgets/Core/UIWidgetTypes.h"
 #include "UI2D/Widgets/Scrolling/UIScrollViewBehavior.h"
 #include "UI2D/Widgets/Scrolling/UIScrollbarBehavior.h"
+#include "UI2D/Widgets/Text/UITextBoxBehavior.h"
 
 #include <memory>
 #include <vector>
@@ -21,6 +22,7 @@ struct UIWidgetRecord {
     UIWidgetLifecycleState lifecycle = UIWidgetLifecycleState::Constructing;
     bool visible = true;
     bool enabled = true;
+    bool pointerInteractionOwner = false;
     std::uint64_t creationOrder = 0;
 
     UIButtonBehaviorDesc buttonBehavior{};
@@ -39,6 +41,7 @@ struct UIWidgetRecord {
 
     std::unique_ptr<UIScrollViewState> scrollView;
     std::unique_ptr<UIScrollbarState> scrollbar;
+    std::unique_ptr<UITextBoxState> textBox;
 };
 
 } // namespace Engine::UI2D

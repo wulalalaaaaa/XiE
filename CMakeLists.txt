@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.20)
-project(XiE VERSION 0.1.0 LANGUAGES CXX)
+project(XiE VERSION 0.1.0 LANGUAGES C CXX)
 
 include(CTest)
 
@@ -13,12 +13,12 @@ if (NOT EXISTS "${CMAKE_SOURCE_DIR}/ThirdLibraries/spdlog/CMakeLists.txt")
 endif()
 
 add_subdirectory(ThirdLibraries/spdlog)
+add_subdirectory(ThirdLibraries/rnnoise)
 
 add_subdirectory(Engine)
-<<<<<<< Updated upstream
 add_subdirectory(Runtime)
-=======
 add_subdirectory(XiE_Projects/test2Dgame)
+add_subdirectory(XiE_Projects/Crystal)
 add_subdirectory(XiE_Projects/RuntimeHostTests)
 add_subdirectory(XiE_Projects/DesktopSurfaceTest)
 add_subdirectory(XiE_Projects/Renderer2DTests)
@@ -39,9 +39,12 @@ add_subdirectory(XiE_Projects/UI2DWidgetTests)
 add_subdirectory(XiE_Projects/UI2DWidgetTest)
 add_subdirectory(XiE_Projects/UI2DScrollViewTests)
 add_subdirectory(XiE_Projects/UI2DScrollViewTest)
+add_subdirectory(XiE_Projects/UI2DVirtualGridTests)
+add_subdirectory(XiE_Projects/UI2DTextEditingTests)
+add_subdirectory(XiE_Projects/UI2DTextBoxTests)
 add_subdirectory(XiE_Projects/EmoExec/EmoExec)
-add_subdirectory(Engine/Launch)
+add_subdirectory(XiE_Projects/AudioRuntimeTests)
+add_subdirectory(XiE_Projects/VoiceMixer)
 
 # Visual Studio: default startup target should be runnable app, not ALL_BUILD
-set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT xie_launch)
->>>>>>> Stashed changes
+set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT XiEVoiceMixer)

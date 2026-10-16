@@ -29,6 +29,7 @@ void ApplicationRuntime::Run(const ApplicationWindowCallbacks& callbacks) {
     double previous = NowSeconds();
     while (!m_Services.host.ShouldExit()) {
         m_Services.host.PollEvents();
+        if (callbacks.pollExternal) callbacks.pollExternal();
         const bool hadCommands = m_Commands.ExecutePending(*this) != 0;
         const double now = NowSeconds();
         const double delta = now - previous;
@@ -39,8 +40,11 @@ void ApplicationRuntime::Run(const ApplicationWindowCallbacks& callbacks) {
 
         m_Registry.ForEachActiveWindow([&](WindowContext& window) {
             window.visible = m_Services.windows.IsVisible(window.window);
+            window.minimized = m_Services.windows.IsMinimized(window.window);
+            window.focused = m_Services.windows.IsFocused(window.window);
             window.closeRequested = m_Services.windows.IsCloseRequested(window.window);
             window.dpiScale = m_Services.windows.GetDpiScale(window.window);
+            window.framebufferSize = m_Services.windows.GetFramebufferSize(window.window);
             if (window.closeRequested) {
                 closeRequests.push_back(window.window);
                 return;
@@ -54,16 +58,50 @@ void ApplicationRuntime::Run(const ApplicationWindowCallbacks& callbacks) {
             if (decision.render && callbacks.render) {
                 callbacks.render(window);
                 if (window.renderPipeline) window.renderPipeline->Present();
+                window.dirty = false;
+                m_Scheduler.AcknowledgeFrame(window.window, now);
             }
             didWork |= decision.update || decision.render;
             if (decision.waitSeconds > 0.0 && decision.waitSeconds < shortestWait) shortestWait = decision.waitSeconds;
         });
 
         for (WindowHandle handle : closeRequests) {
+            bool handled = false;
+            if (callbacks.close) {
+                if (WindowContext* context = m_Registry.TryGet(handle)) {
+                    handled = callbacks.close(*context);
+                }
+            }
+            if (handled) continue;
+            m_Scheduler.ForgetWindow(handle);
             (void)m_Registry.Unregister(handle);
             m_Services.windows.DestroyWindow(handle);
         }
-        if (m_Registry.Size() == 0) {
+
+        const bool hasExternalWindows = callbacks.hasExternalWindows &&
+            callbacks.hasExternalWindows();
+        if (hasExternalWindows) {
+            const ApplicationWindowCallbacks::Activity before =
+                callbacks.queryExternalActivity
+                    ? callbacks.queryExternalActivity()
+                    : ApplicationWindowCallbacks::Activity{};
+            const bool externalWork = before.hasActiveAnimation ||
+                before.hasPendingWork;
+            if (externalWork && callbacks.updateExternal) {
+                callbacks.updateExternal(delta);
+                didWork = true;
+            }
+            const ApplicationWindowCallbacks::Activity after =
+                callbacks.queryExternalActivity
+                    ? callbacks.queryExternalActivity() : before;
+            if ((externalWork || after.hasActiveAnimation ||
+                    after.hasPendingWork) && callbacks.renderExternal) {
+                callbacks.renderExternal();
+                didWork = true;
+            }
+        }
+
+        if (m_Registry.Size() == 0 && !hasExternalWindows) {
             RequestExit();
         } else if (!didWork) {
             m_Services.host.WaitForEventsTimeout(shortestWait);

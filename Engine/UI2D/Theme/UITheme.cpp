@@ -106,7 +106,18 @@ UIThemeDefinition MakeDefaultDefinition(bool light) {
     focusWithin.properties.colorMultiplier = colors.focus;
     focusWithin.transitions.opacity = {animation.focusDuration, UIEasing::EaseOutQuad};
     ring.rules.push_back(focusWithin);
-    definition.styleClasses = {panel, interactive, image, ring};
+    UIStyleClassDefinition textBox{"Widget.TextBox"};
+    textBox.baseStyle.colorMultiplier = colors.surfaceElevated;
+    textBox.rules = {hover, focused, disabled};
+    UIStyleClassDefinition placeholder{"Widget.TextBox.Placeholder"};
+    placeholder.baseStyle.colorMultiplier = colors.foregroundMuted;
+    UIStyleClassDefinition selection{"Widget.TextBox.Selection"};
+    selection.baseStyle.colorMultiplier = colors.accent;
+    UIStyleClassDefinition caret{"Widget.TextBox.Caret"};
+    caret.baseStyle.colorMultiplier = colors.foreground;
+    definition.styleClasses = {
+        panel, interactive, image, ring,
+        textBox, placeholder, selection, caret};
     return definition;
 }
 } // namespace

@@ -13,6 +13,7 @@ LayeredWindowRenderPipeline::LayeredWindowRenderPipeline(
 
 void LayeredWindowRenderPipeline::Resize(int logicalWidth, int logicalHeight, float dpiScale) {
     m_DpiScale = std::max(0.01f, dpiScale);
+    m_Renderer.PrepareTextForDpiScale(m_DpiScale);
     m_Renderer.Resize(
         static_cast<int>(std::lround(static_cast<float>(logicalWidth) * m_DpiScale)),
         static_cast<int>(std::lround(static_cast<float>(logicalHeight) * m_DpiScale)));

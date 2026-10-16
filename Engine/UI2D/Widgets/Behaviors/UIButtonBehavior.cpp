@@ -30,6 +30,7 @@ UIWidgetHandle UIWidgetRuntime::CreateButton(const UIButtonWidgetDesc& desc, UIW
     UIWidgetRecord record; record.parentWidget = parent; record.rootNode = root;
     record.childHostNode = root; record.ownedNodes = {root}; record.kind = UIWidgetKind::Button;
     record.visible = desc.panel.common.visible; record.enabled = desc.panel.common.enabled;
+    record.pointerInteractionOwner = true;
     record.buttonBehavior = desc.behavior;
     const UIWidgetHandle handle = RegisterOrRollback(std::move(record));
     if (handle.IsValid()) InstallButtonBehavior(handle);
@@ -46,6 +47,7 @@ UIWidgetHandle UIWidgetRuntime::CreateToggleButton(
     UIWidgetRecord record; record.parentWidget = parent; record.rootNode = root;
     record.childHostNode = root; record.ownedNodes = {root}; record.kind = UIWidgetKind::ToggleButton;
     record.visible = desc.button.panel.common.visible; record.enabled = desc.button.panel.common.enabled;
+    record.pointerInteractionOwner = true;
     record.buttonBehavior = desc.button.behavior; record.checked = false;
     record.allowUncheck = desc.allowUncheck;
     const UIWidgetHandle handle = RegisterOrRollback(std::move(record));
@@ -95,9 +97,10 @@ void UIWidgetRuntime::InstallButtonBehavior(UIWidgetHandle widget) {
     // Content widgets may be the hit target, so activation also listens while bubbling.
     (void)Connect(widget, node, UIEventType::Click,
         UIEventPhaseMask::Bubble,
-        [this, widget](UIEventContext&) {
+        [this, widget, node](UIEventContext& context) {
             const UIWidgetRecord* current = m_Registry.TryGet(widget);
-            if (current && current->buttonBehavior.activateOnPointerClick)
+            if (current && context.Event().interactionOwner == node &&
+                current->buttonBehavior.activateOnPointerClick)
                 (void)Activate(widget, UIButtonActivatedEvent::Source::Pointer);
         });
     (void)Connect(widget, node, UIEventType::KeyDown, UIEventPhaseMask::Target,

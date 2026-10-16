@@ -12,9 +12,13 @@ std::uint64_t UIPressTracker::Key(UIPressKey key) noexcept {
 }
 
 bool UIPressTracker::BeginPress(
-    UIPressKey key, UINodeHandle node, Engine::Vec2F position, double timestamp) {
+    UIPressKey key, UINodeHandle node, UINodeHandle interactionOwner,
+    bool hasInteractionOwner, Engine::Vec2F position, double timestamp) {
     if (!node.IsValid() || key.button == Engine::PointerButton::None) return false;
-    m_Presses[Key(key)] = {node, position, timestamp, false};
+    if (!interactionOwner.IsValid()) interactionOwner = node;
+    m_Presses[Key(key)] = {
+        node, interactionOwner, hasInteractionOwner,
+        position, timestamp, false};
     return true;
 }
 
@@ -55,7 +59,10 @@ std::vector<Engine::PointerId> UIPressTracker::ActivePointers() const {
 
 void UIPressTracker::OnNodeInvalidated(UINodeHandle node) {
     for (auto it = m_Presses.begin(); it != m_Presses.end();) {
-        if (it->second.pressedNode == node) it = m_Presses.erase(it); else ++it;
+        if (it->second.pressedNode == node ||
+            it->second.interactionOwner == node) {
+            it = m_Presses.erase(it);
+        } else ++it;
     }
 }
 
@@ -64,9 +71,13 @@ std::vector<UINodeHandle> UIPressTracker::Sanitize(const UIScene& scene) {
     for (auto& [key, record] : m_Presses) {
         (void)key;
         const UINodeRecord* node = scene.TryGet(record.pressedNode);
-        if (!node || !node->visible || !node->enabled ||
-            !node->layoutState.effectiveVisible || !node->layoutState.effectiveEnabled) {
-            if (!record.canceled) canceled.push_back(record.pressedNode);
+        const UINodeRecord* owner = scene.TryGet(record.interactionOwner);
+        if (!node || !owner || !node->visible || !node->enabled ||
+            !node->layoutState.effectiveVisible ||
+            !node->layoutState.effectiveEnabled || !owner->visible ||
+            !owner->enabled || !owner->layoutState.effectiveVisible ||
+            !owner->layoutState.effectiveEnabled) {
+            if (!record.canceled) canceled.push_back(record.interactionOwner);
             record.canceled = true;
         }
     }
@@ -77,7 +88,7 @@ void UIPressTracker::ClearAll() { m_Presses.clear(); }
 
 bool UIPressTracker::IsPressed(UINodeHandle node, Engine::PointerButton button) const {
     for (const auto& [key, record] : m_Presses) {
-        if (!record.canceled && record.pressedNode == node &&
+        if (!record.canceled && record.interactionOwner == node &&
             (button == Engine::PointerButton::None ||
              static_cast<std::uint8_t>(key & 0xffu) == static_cast<std::uint8_t>(button))) return true;
     }

@@ -15,6 +15,7 @@ OpenGLWindowRenderPipeline::OpenGLWindowRenderPipeline(
 
 void OpenGLWindowRenderPipeline::Resize(int logicalWidth, int logicalHeight, float dpiScale) {
     const float scale = std::max(0.01f, dpiScale);
+    m_Renderer.PrepareTextForDpiScale(scale);
     m_Surface.Resize(
         static_cast<int>(std::lround(static_cast<float>(logicalWidth) * scale)),
         static_cast<int>(std::lround(static_cast<float>(logicalHeight) * scale)));

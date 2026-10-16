@@ -26,6 +26,23 @@ std::string MakeCacheKey(FontHandle font, std::u32string_view text, float maxWid
 
 } // namespace
 
+void BasicTextLayoutService::PrepareForDpiScale(float dpiScale) {
+    // Two source samples per framebuffer pixel keeps compact UI labels crisp
+    // after alpha composition without exposing supersampling policy to apps.
+    SetRasterScale(std::max(1.0f, dpiScale) * 2.0f);
+}
+
+void BasicTextLayoutService::SetRasterScale(float scale) {
+    scale = std::clamp(scale, 1.0f, 4.0f);
+    if (std::abs(scale - m_RasterScale) < 0.01f) {
+        return;
+    }
+    m_RasterScale = scale;
+    m_Cache.clear();
+    m_Slots.clear();
+    ++m_Revision;
+}
+
 TextLayoutHandle BasicTextLayoutService::CreateLayout(
     FontHandle font,
     std::u32string_view text,
@@ -94,12 +111,17 @@ std::wstring BasicTextLayoutService::ToWide(std::u32string_view text) {
 }
 
 TextLayoutBitmap BasicTextLayoutService::Rasterize(std::u32string_view text, float maxWidth, float fontSize) {
-    const int width = std::max(1, static_cast<int>(std::ceil(maxWidth > 0.0f ? maxWidth : fontSize * static_cast<float>(text.size() + 1))));
-    const int height = std::max(1, static_cast<int>(std::ceil(fontSize * 1.6f)));
+    const float logicalWidth = maxWidth > 0.0f
+        ? maxWidth
+        : fontSize * static_cast<float>(text.size() + 1);
+    const int width = std::max(1, static_cast<int>(std::ceil(logicalWidth * m_RasterScale)));
+    const int height = std::max(1, static_cast<int>(std::ceil(fontSize * 1.6f * m_RasterScale)));
     TextLayoutBitmap bitmap{};
     bitmap.width = width;
     bitmap.height = height;
+    bitmap.rasterScale = m_RasterScale;
     bitmap.bgraPremultiplied.assign(static_cast<std::size_t>(width * height * 4), 0);
+    bitmap.caretStops.assign(text.size() + 1, 0.0f);
 
 #ifdef _WIN32
     BITMAPINFO info{};
@@ -118,18 +140,28 @@ TextLayoutBitmap BasicTextLayoutService::Rasterize(std::u32string_view text, flo
     SetBkMode(dc, TRANSPARENT);
     SetTextColor(dc, RGB(255, 255, 255));
     HFONT font = CreateFontW(
-        -static_cast<int>(std::round(fontSize)),
-        0, 0, 0, FW_SEMIBOLD,
+        -static_cast<int>(std::round(fontSize * m_RasterScale)),
+        0, 0, 0, FW_MEDIUM,
         FALSE, FALSE, FALSE,
         DEFAULT_CHARSET,
         OUT_DEFAULT_PRECIS,
         CLIP_DEFAULT_PRECIS,
-        CLEARTYPE_QUALITY,
+        ANTIALIASED_QUALITY,
         DEFAULT_PITCH,
         L"Microsoft YaHei UI");
     HGDIOBJ oldFont = SelectObject(dc, font);
     RECT rect{0, 0, width, height};
     const std::wstring wide = ToWide(text);
+    std::size_t wideCount = 0;
+    for (std::size_t scalar = 0; scalar < text.size(); ++scalar) {
+        wideCount += text[scalar] > 0xFFFF ? 2 : 1;
+        SIZE measured{};
+        if (GetTextExtentPoint32W(
+            dc, wide.data(), static_cast<int>(wideCount), &measured)) {
+            bitmap.caretStops[scalar + 1] =
+                static_cast<float>(measured.cx) / m_RasterScale;
+        }
+    }
     DrawTextW(dc, wide.c_str(), static_cast<int>(wide.size()), &rect, DT_LEFT | DT_VCENTER | DT_SINGLELINE | DT_NOPREFIX);
 
     const auto* src = static_cast<const std::uint8_t*>(bits);
@@ -151,7 +183,11 @@ TextLayoutBitmap BasicTextLayoutService::Rasterize(std::u32string_view text, flo
     DeleteDC(dc);
     ReleaseDC(nullptr, screen);
 #else
-    (void)text;
+    float position = 0.0f;
+    for (std::size_t i = 0; i < text.size(); ++i) {
+        position += text[i] < 0x80 ? fontSize * 0.6f : fontSize;
+        bitmap.caretStops[i + 1] = position;
+    }
 #endif
 
     return bitmap;

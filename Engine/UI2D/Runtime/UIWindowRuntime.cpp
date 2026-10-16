@@ -112,7 +112,8 @@ UI2DUpdateResult UIWindowRuntime::Update(
     if (!events.empty()) {
         UIInputDispatchContext inputContext{
             m_Window, m_Services.hitTester, m_FocusManager, m_Listeners,
-            m_Mutations, m_Interaction, {}, m_FocusRequests, m_FocusPolicy};
+            m_Mutations, m_Interaction, {}, m_FocusRequests, m_FocusPolicy,
+            &m_Widgets.Registry()};
         result.inputDispatch = m_Services.inputRouter.Dispatch(m_Scene, events, inputContext);
     }
 
@@ -199,17 +200,15 @@ void UIWindowRuntime::SetVisible(bool visible) {
     if (m_Visible == visible) return;
     m_Visible = visible;
     if (!visible) {
+        UIFocusDispatchContext context = MakeFocusContext();
+        m_FocusManager.OnWindowFocusChanged(m_Scene, false, context);
         m_Widgets.OnWindowHidden();
         m_Input.DiscardForHiddenWindow();
         m_Interaction.ClearAll();
-        UIFocusDispatchContext context = MakeFocusContext();
-        m_FocusManager.OnWindowFocusChanged(m_Scene, false, context);
         m_FocusManager.DiscardRestoreCandidate();
         m_FocusRequests.Clear();
         m_Services.inputRouter.OnWindowHidden(m_Scene);
     } else {
-        UIFocusDispatchContext context = MakeFocusContext();
-        m_FocusManager.OnWindowFocusChanged(m_Scene, true, context);
         (void)m_Animator.CancelAllForChannel(m_Scene,
             UIAnimationChannel::InteractionStyle, UIAnimationCancelMode::RestoreBase);
         m_Scene.MarkAllDirty(UIDirtyFlags::Layout | UIDirtyFlags::Visual | UIDirtyFlags::HitTest);
