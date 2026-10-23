@@ -177,7 +177,7 @@ Mic (MCHOSE V9 PRO)
 
 应用进入 Running 并持续 8 秒后停止，端点正常释放。现场诊断：总延迟 49.3 ms、callback 0.07 ms / max 0.10 ms、deadline 0.4%、XRUN/UNDER 0/0、RT allocation 0、FFT 2048 / 30 Hz、Analyzer Worker 0.11 ms、Spectrum revision 236 / dropped 0、EQ process 0.002 ms。
 
-测试截图：`artifacts/xie-voice-mixer-live-spectrum.png`。
+测试截图：`artifacts/XiE/Audio/VoiceMixer/xie-voice-mixer-live-spectrum.png`。
 
 ## 17. 人工耳机听感结果
 

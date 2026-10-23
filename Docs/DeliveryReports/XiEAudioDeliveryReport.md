@@ -16,7 +16,7 @@ Engine/Audio/DSP/
 Engine/Audio/Diagnostics/
 Engine/Audio/Voice/
 XiE_Projects/AudioRuntimeTests/
-Docs/Architecture/XiEAudioRuntimeArchitecture.md
+../Architecture/XiEAudioRuntimeArchitecture.md
 ```
 
 The authoritative file list is represented by the CMake targets in those

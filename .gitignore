@@ -32,22 +32,10 @@ compile_commands.json
 # Dependencies downloaded on demand by CMake FetchContent
 /Engine/External/
 
-# Applications and game projects are published separately. Keep the Audio
-# integration tests, VoiceMixer application, and the one repaired EmoExec
-# build description in this engine delivery.
-/XiE_Projects/*
-!/XiE_Projects/AudioRuntimeTests/
-!/XiE_Projects/VoiceMixer/
-!/XiE_Projects/EmoExec/
-!/XiE_Projects/Crystal/
-!/XiE_Projects/Crystal/**
-!/XiE_Projects/XSI/
-/XiE_Projects/EmoExec/*
-!/XiE_Projects/EmoExec/EmoExec/
-/XiE_Projects/EmoExec/EmoExec/*
-!/XiE_Projects/EmoExec/EmoExec/CMakeLists.txt
+# XiE_Projects contains source projects and tests. Do not ignore the tree as a
+# whole; the separate EmoExec repository is connected explicitly as a submodule.
 
-# Crystal Phase 1 local Python environment and test scratch files
+# Crystal's local Python environment and test scratch files
 XiE_Projects/Crystal/CrystalServer/.venv/
 XiE_Projects/Crystal/CrystalServer/.pytest-tmp/
 XiE_Projects/Crystal/CrystalServer/.pytest_cache/
@@ -87,17 +75,8 @@ XiE_Projects/Crystal/CrystalServer/data/*.db
 Thumbs.db
 Desktop.ini
 /临时/
+/phase5-pytest-temp/
 
-# EmoExec Phase 9A generated Release staging/ZIP (not source-controlled)
-/artifacts/release/
-
-# Documentation: keep only the maintained project documents below
-Docs/*
-!Docs/2D_MinimalLoop_Verification.md
-!Docs/2D_Engine_Implementation_Handoff.md
-!Docs/Architecture/
-!Docs/Architecture/*.md
-!Docs/XSI_V1_SPEC.md
-!Docs/XSI_V1_ARCHITECTURE.md
-!Docs/XSI_V1_TEST_REPORT.md
-!Docs/XSI_V1_CHANGELOG.md
+# Generated test evidence, runtime data, benchmark output, and release staging
+# live under artifacts/ and stay local. Store reusable input fixtures in Tests/.
+/artifacts/

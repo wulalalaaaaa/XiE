@@ -205,12 +205,12 @@ miss 保持 0。此前 Release Voice Graph benchmark 的代表性 128-frame full
 
 ## 16. 截图路径
 
-- 统一编辑器最终空闲布局（120 DPI）：`artifacts/XiEUnifiedAudioEditor-final-scaled.png`
-- 统一编辑器最终运行时频谱：`artifacts/XiEUnifiedAudioEditor-final-spectrum.png`
-- VoiceMeeter 回授保护实际端点画面：`artifacts/XiEUnifiedAudioEditor-feedback-safe.png`
-- 早期兼容截图仍保留：`artifacts/XiEUnifiedAudioEditor-physical.png`、
-  `artifacts/XiEUnifiedAudioEditor-spectrum2.png`、
-  `artifacts/XiEUnifiedAudioEditor-pitch.png`
+- 统一编辑器最终空闲布局（120 DPI）：`artifacts/XiE/Audio/UnifiedAudioEditor/XiEUnifiedAudioEditor-final-scaled.png`
+- 统一编辑器最终运行时频谱：`artifacts/XiE/Audio/UnifiedAudioEditor/XiEUnifiedAudioEditor-final-spectrum.png`
+- VoiceMeeter 回授保护实际端点画面：`artifacts/XiE/Audio/UnifiedAudioEditor/XiEUnifiedAudioEditor-feedback-safe.png`
+- 早期兼容截图仍保留：`artifacts/XiE/Audio/UnifiedAudioEditor/XiEUnifiedAudioEditor-physical.png`、
+  `artifacts/XiE/Audio/UnifiedAudioEditor/XiEUnifiedAudioEditor-spectrum2.png`、
+  `artifacts/XiE/Audio/UnifiedAudioEditor/XiEUnifiedAudioEditor-pitch.png`
 
 截图使用 Release `XiEVoiceMixer.exe`，不是旧 VoiceChanger 二进制。
 

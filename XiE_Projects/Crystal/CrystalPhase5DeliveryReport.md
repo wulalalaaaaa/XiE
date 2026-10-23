@@ -17,9 +17,9 @@ Phase 5 已完成网络传输修复、Debug 断线注入、Workspace UX 代码�
 1. Crystal Server：`CrystalServer/.venv/Scripts/python.exe -m uvicorn app.main:app --host 127.0.0.1 --port 8787`。
 2. 两个 Debug `crystal_client`，均连接 `P_HighSchool`。
 3. Server 日志出现两个真实 WebSocket `[accepted] / connection open`，不是 Mock；`websockets==14.1` 已加入服务端依赖。
-4. 服务端 REST 将 `P_HighSchool:task-npc-scene` 的 Status 从 Ready 改为 Testing，客户端 A 在真实窗口中平移到卡片后看到 `TESTING`；证据：`phase5-A-after-status.png`。
-5. 暂停 Server 后，客户端 A 真实显示 `RECONNECTING`；证据：`phase5-A-server-paused.png`。
-6. 重启 Server 后，A/B 重新显示 `CONNECTED`，并发生 authoritative workspace reload；证据：`phase5-A-after-server-restart.png`、`phase5-B-after-server-restart.png`。
+4. 服务端 REST 将 `P_HighSchool:task-npc-scene` 的 Status 从 Ready 改为 Testing，客户端 A 在真实窗口中平移到卡片后看到 `TESTING`；证据：`../../artifacts/XiE/Crystal/phase5/phase5-A-after-status.png`。
+5. 暂停 Server 后，客户端 A 真实显示 `RECONNECTING`；证据：`../../artifacts/XiE/Crystal/phase5/phase5-A-server-paused.png`。
+6. 重启 Server 后，A/B 重新显示 `CONNECTED`，并发生 authoritative workspace reload；证据：`../../artifacts/XiE/Crystal/phase5/phase5-A-after-server-restart.png`、`../../artifacts/XiE/Crystal/phase5/phase5-B-after-server-restart.png`。
 
 结果拆分：
 

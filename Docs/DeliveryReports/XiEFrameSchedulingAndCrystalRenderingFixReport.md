@@ -92,7 +92,7 @@ VBO 使用 capacity-based dynamic storage：容量不足时才 `glBufferData(...
 
 ## 21. Debug Before/After
 
-旧版基线是仍在运行的旧 `crystal_client.exe`（PID 78496）10 秒 `TotalProcessorTime` 增量 2.5312 秒，即约 25.31% 单逻辑核等效 CPU；该进程未被本轮终止或替换。最终 Debug 变体为 `artifacts/crystal_debug/crystal_client_perf.exe`，离线空闲 5 秒 CPU 增量 0.109375 秒，即约 2.19% 单逻辑核等效 CPU，按这两次采样约降低 91.4%。此前另一组 10 秒 invalid-server warm idle 采样为 0.469%，作为补充而非替代基线。
+旧版基线是仍在运行的旧 `crystal_client.exe`（PID 78496）10 秒 `TotalProcessorTime` 增量 2.5312 秒，即约 25.31% 单逻辑核等效 CPU；该进程未被本轮终止或替换。最终 Debug 变体为 `artifacts/XiE/Crystal/Performance/Debug/crystal_client_perf.exe`，离线空闲 5 秒 CPU 增量 0.109375 秒，即约 2.19% 单逻辑核等效 CPU，按这两次采样约降低 91.4%。此前另一组 10 秒 invalid-server warm idle 采样为 0.469%，作为补充而非替代基线。
 
 Debug fixture 的最终 5 秒采样：3 Render、3 Present、25 skipped、7 requests、2.5% 单逻辑核等效 CPU、`RenderBuildTime=34.6663 ms`（该字段为本次采样 scope 累计/统计格式，不等同单帧 wall-clock）、`PresentTime=0.0462 ms`、GPU query 0.111296 ms/1 sample。
 

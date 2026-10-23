@@ -173,14 +173,16 @@ contains unrelated legacy targets that are not built in this configuration.
 
 Release UI captures were produced from the packaged executable:
 
-- [FX page with Electronic Mist card](artifacts/XiEElectronicMist-fx.png)
-- [Unified editor with Electronic Noise track active](artifacts/XiEElectronicMist-unified-track.png)
-- [Diagnostics view](artifacts/XiEElectronicMist-diagnostics.png)
+本地截图保存在被忽略的 `artifacts/` 下：
+
+- FX page with Electronic Mist card: `artifacts/XiE/Audio/ElectronicMist/XiEElectronicMist-fx.png`
+- Unified editor with Electronic Noise track active: `artifacts/XiE/Audio/ElectronicMist/XiEElectronicMist-unified-track.png`
+- Diagnostics view: `artifacts/XiE/Audio/ElectronicMist/XiEElectronicMist-diagnostics.png`
 
 ## Release package
 
-- [XiEVoiceMixer.exe](vs_build/package/XiEVoiceMixer/XiEVoiceMixer.exe)
+- `vs_build/package/XiEVoiceMixer/XiEVoiceMixer.exe`
   SHA-256: `7F22C1FB8F44CF2FCE89B275EB2AA52DF41EA51FCB9EC4030FA448BE0EA64B1E`
-- [XiEVoiceMixer-Release.zip](vs_build/package/XiEVoiceMixer-Release.zip)
+- `vs_build/package/XiEVoiceMixer-Release.zip`
   SHA-256: `E028D565C4CFA109DAA78896DE078A2D79365762BFAA20292487380072EBB19A`
 - Package `--self-test`: exit code 0.

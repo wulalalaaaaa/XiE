@@ -183,10 +183,10 @@ Soft Haze / Spatial Haze 的新听感尚未在本轮用耳机完成，标记为 
 
 最终 Release 已安装、压缩并运行 `XiEVoiceMixer.exe --self-test`（ExitCode=0）。
 
-- 可执行文件：[XiEVoiceMixer.exe](/E:/Project_c++/XiE/vs_build/package/XiEVoiceMixer/XiEVoiceMixer.exe)
+- 可执行文件：`vs_build/package/XiEVoiceMixer/XiEVoiceMixer.exe`
   - Size：1,938,944 bytes
   - SHA-256：`10E52A3CDF909B368690D3D1D9E0F23E27EBD048130FE00925E6ECA01E15A1EE`
-- 压缩包：[XiEVoiceMixer-Release.zip](/E:/Project_c++/XiE/vs_build/package/XiEVoiceMixer-Release.zip)
+- 压缩包：`vs_build/package/XiEVoiceMixer-Release.zip`
   - Size：2,025,328 bytes
   - SHA-256：`D7B3B574F0BB438418C69E8E6F565C09BF7A7A5455B232233B217189FDA2E3A2`
-- FX 页面截图：[artifacts/XiEHazeEffects-fx.png](/E:/Project_c++/XiE/artifacts/XiEHazeEffects-fx.png)
+- FX 页面截图（本地验证产物）：`artifacts/XiE/Audio/HazeEffects/XiEHazeEffects-fx.png`

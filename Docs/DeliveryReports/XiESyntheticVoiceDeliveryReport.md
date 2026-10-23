@@ -136,7 +136,7 @@ SHA-256:
 - `XiEVoiceMixer.exe`: `86B9552A1C299579BBC48ABBCA3ECD7E9777B6BB319E69952EF044358453406F`
 - `XiEVoiceMixer.zip`: `76B6AA24159E11286FC63356B99AA35EAECA6FB4F3A2808A74E152085F8207F3`
 
-FX page screenshot: `artifacts/XiESyntheticVoice-fx.png`.
+FX page screenshot: `artifacts/XiE/Audio/SyntheticVoice/XiESyntheticVoice-fx.png`.
 
 ## 21. Known limitations
 
