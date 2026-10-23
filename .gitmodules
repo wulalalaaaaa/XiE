@@ -1,6 +1,3 @@
 [submodule "ThirdLibraries/spdlog"]
 	path = ThirdLibraries/spdlog
 	url = https://github.com/gabime/spdlog
-[submodule "XiE_Projects/EmoExec/EmoExec"]
-	path = XiE_Projects/EmoExec/EmoExec
-	url = https://github.com/wulalalaaaaa/EmoExec.git

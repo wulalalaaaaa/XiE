@@ -77,6 +77,9 @@ Desktop.ini
 /临时/
 /phase5-pytest-temp/
 
+# EmoExec is maintained in its own GitHub repository and is not part of XiE.
+/XiE_Projects/EmoExec/EmoExec/
+
 # Generated test evidence, runtime data, benchmark output, and release staging
 # live under artifacts/ and stay local. Store reusable input fixtures in Tests/.
 /artifacts/
