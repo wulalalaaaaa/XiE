@@ -41,6 +41,7 @@ compile_commands.json
 !/XiE_Projects/EmoExec/
 !/XiE_Projects/Crystal/
 !/XiE_Projects/Crystal/**
+!/XiE_Projects/XSI/
 /XiE_Projects/EmoExec/*
 !/XiE_Projects/EmoExec/EmoExec/
 /XiE_Projects/EmoExec/EmoExec/*
@@ -96,3 +97,7 @@ Docs/*
 !Docs/2D_Engine_Implementation_Handoff.md
 !Docs/Architecture/
 !Docs/Architecture/*.md
+!Docs/XSI_V1_SPEC.md
+!Docs/XSI_V1_ARCHITECTURE.md
+!Docs/XSI_V1_TEST_REPORT.md
+!Docs/XSI_V1_CHANGELOG.md

@@ -45,6 +45,7 @@ add_subdirectory(XiE_Projects/UI2DTextBoxTests)
 add_subdirectory(XiE_Projects/EmoExec/EmoExec)
 add_subdirectory(XiE_Projects/AudioRuntimeTests)
 add_subdirectory(XiE_Projects/VoiceMixer)
+add_subdirectory(XiE_Projects/XSI)
 
 # Visual Studio: default startup target should be runnable app, not ALL_BUILD
 set_property(DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR} PROPERTY VS_STARTUP_PROJECT XiEVoiceMixer)
